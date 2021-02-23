@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "953123541861",
+    "project_id": "live-courier-ut3",
+    "storage_bucket": "live-courier-ut3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:953123541861:android:bac4a90ca93de82d05478c",
+        "android_client_info": {
+          "package_name": "com.example.live_courier_ut3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "953123541861-1bt6hj81ffj1s4mlul9honav8at3j718.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.live_courier_ut3",
+            "certificate_hash": "86cd9bc4a8757349a38b623e198538ca2b8bc420"
+          }
+        },
+        {
+          "client_id": "953123541861-2hd8878in3hm8nhjavram1r2vj2ut3dj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqajLmyMORiy3TivY4WVIX-BhdiM2IKPU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "953123541861-2hd8878in3hm8nhjavram1r2vj2ut3dj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
