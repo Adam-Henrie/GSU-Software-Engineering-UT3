@@ -5,9 +5,14 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +32,8 @@ import com.example.live_courier_ut3.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,6 +50,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -80,14 +89,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     MapView mapView;
 
     GoogleMap googleMap;
+    //location object based in google maps sdk
+    private FusedLocationProviderClient mFusedLocationClient;
 
+    //creating image buttons for the transfer to each new store page
+    //public ImageButton target = new ImageButton(this);
+    public ImageButton target;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mapView = findViewById(R.id.mapView);
 
+
+
+        mQuoteTextView = (TextView) findViewById(R.id.quote_display);
+        btn_button = findViewById(R.id.btn_button);
+        EditText tv_quote = findViewById(R.id.et_quote);
+        EditText tv_author = findViewById(R.id.et_author);
+
+
+        //if user hasn't logged in before create an intent which transfers you to the LoginRegisterActivity
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startLoginActivity();
+        }
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mapView = findViewById(R.id.mapView);
 
         checkPermission();
         if (isPermissionGranted) {
@@ -103,21 +132,76 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
-        mQuoteTextView = (TextView) findViewById(R.id.quote_display);
-        btn_button = findViewById(R.id.btn_button);
-        EditText tv_quote = findViewById(R.id.et_quote);
-        EditText tv_author = findViewById(R.id.et_author);
+        target = findViewById(R.id.target);
 
+        target.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toTarget = new Intent(v.getContext(), Target.class);
+                startActivity(toTarget);
 
-        //if user hasn't logged in before create an intent which transfers you to the LoginRegisterActivity
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startLoginActivity();
-        }
+            }
+        });
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+       // mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+      //  getLastKnownLocation();
 
     }
+
+
+    private void getLastKnownLocation() {
+        Log.d(TAG, "getLastKnownLocation: called.");
+
+//        LatLng startPos = new LatLng(34.140980,-84.357679);
+//        Location mockLocation = new Location(LocationManager.GPS_PROVIDER); // a string
+//
+//        mockLocation.setLatitude(startPos.latitude);  // double
+//        mockLocation.setLongitude(startPos.longitude);
+//        mockLocation.setAltitude(100);
+//        mockLocation.setTime(System.currentTimeMillis());
+//        mockLocation.setAccuracy(1);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//            mockLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
+//        }
+//
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        LocationServices.getFusedLocationProviderClient(this).setMockMode(true);
+//        LocationServices.getFusedLocationProviderClient(this).setMockLocation(mockLocation);
+
+
+
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<android.location.Location>() {
+            @Override
+            public void onComplete(@NonNull Task<android.location.Location> task) {
+                if (task.isSuccessful()) {
+                    Location location = task.getResult();
+                    GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+             Log.d(TAG, "onComplete: latitude: " + geoPoint.getLatitude());
+             Log.d(TAG, "onComplete: longitude: " + geoPoint.getLongitude());
+                }
+            }
+        });
+
+    }
+
+
+
+
+
 
     private boolean checkGooglePlayServices() {
         GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
@@ -196,7 +280,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.finish();
     }
 
-    ;
+    //target activity
+    public void toTargetActivity(){
+        Intent intent = new Intent(this, Target.class);
+        startActivity(intent);
+        this.finish();
+    }
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -258,8 +347,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         dataToSave.put(Quote_Key, quoteText);
         dataToSave.put(Author_Key, authorText);
         Map<String, Object> dataToAdd = new HashMap<String, Object>();
-        dataToAdd.put("qussss", quoteText);
-        dataToAdd.put("asds", authorText);
+        dataToAdd.put(Quote_Key, quoteText);
+        dataToAdd.put(Author_Key, authorText);
 
         mDocRef.update(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -274,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
 
-        rDocRef.set(dataToSave);
+        mDocRef.set(dataToSave);
 
     }
 
@@ -319,26 +408,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         mapView.onStart();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mapView.onResume();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         mapView.onPause();
     }
 
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         mapView.onStop();
 
@@ -346,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
     }
