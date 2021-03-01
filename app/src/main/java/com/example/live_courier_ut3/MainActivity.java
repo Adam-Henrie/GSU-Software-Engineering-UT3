@@ -11,6 +11,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.os.SystemClock;
 import android.provider.Settings;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,6 +54,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
+import com.google.maps.model.DirectionsResult;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -78,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //firestore firebase data and document references to access information
     private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("sampleData/inspiration");
     private DocumentReference rDocRef = FirebaseFirestore.getInstance().document("sampleData/with_more_inspiration");
+
     private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     //main button name "click me" to access information form the server
@@ -86,21 +93,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //boolean for checking if google play services is enabled
     boolean isPermissionGranted;
 
+    //map object used for maps
     MapView mapView;
 
     GoogleMap googleMap;
     //location object based in google maps sdk
     private FusedLocationProviderClient mFusedLocationClient;
 
+    private GeoApiContext mGeoApiContext;
+
+    public MarkerOptions userPosition = new MarkerOptions();
+
+    public GeoPoint geoStart;
+
+    public GeoPoint destinationCords;
+
+
+
     //creating image buttons for the transfer to each new store page
     //public ImageButton target = new ImageButton(this);
     public ImageButton target;
+    public static final MarkerOptions WAL_MARKER = new MarkerOptions();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         mQuoteTextView = (TextView) findViewById(R.id.quote_display);
@@ -143,15 +163,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-       // mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-      //  getLastKnownLocation();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+        getLastKnownLocation();
+
+
+
+   //     Log.d(TAG, "Null object? : " + test.getLatitude() + " " + test.getLongitude());
+        //walmart starting point 34.149409, -84.249323
+        LatLng start = new LatLng(34.149409, -84.249323);
+        MarkerOptions directionsMarker = new MarkerOptions();
+        directionsMarker.position(start);
+
+      //  calculateDirections(directionsMarker);
+
+
 
     }
 
 
-    private void getLastKnownLocation() {
+    public GeoPoint getLastKnownLocation() {
         Log.d(TAG, "getLastKnownLocation: called.");
-
+// marker spoof location method
 //        LatLng startPos = new LatLng(34.140980,-84.357679);
 //        Location mockLocation = new Location(LocationManager.GPS_PROVIDER); // a string
 //
@@ -177,12 +211,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        LocationServices.getFusedLocationProviderClient(this).setMockMode(true);
 //        LocationServices.getFusedLocationProviderClient(this).setMockLocation(mockLocation);
 
-
-
-
-
+        // geoPoint for this return statement under
+        GeoPoint placateGeo = new GeoPoint(23.232323,23.232323);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+            return placateGeo;
         }
         mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<android.location.Location>() {
             @Override
@@ -190,17 +222,55 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (task.isSuccessful()) {
                     Location location = task.getResult();
                     GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-             Log.d(TAG, "onComplete: latitude: " + geoPoint.getLatitude());
-             Log.d(TAG, "onComplete: longitude: " + geoPoint.getLongitude());
+                    Log.d(TAG, "onComplete: latitude: " + geoPoint.getLatitude());
+                    Log.d(TAG, "onComplete: longitude: " + geoPoint.getLongitude());
+
+                    //Manual insertion commented out. Used for testing
+                    //LatLng latLng = new LatLng(34.140980, -84.357679);
+                   //  userPosition = new MarkerOptions();
+
+                    //this latLng should be from current user realtime position
+                    LatLng latLng = new LatLng(geoPoint.getLatitude(),geoPoint.getLongitude());
+
+                    userPosition.position(latLng);
+                    geoStart = new GeoPoint(latLng.latitude,latLng.longitude);
+                    Log.d("geoStart", geoStart.toString());
+                  //  geoStart = new GeoPoint(userPosition.getPosition().latitude,userPosition.getPosition().longitude);
+                    Log.d(TAG, "Complete: latitude: current realtime position " + geoStart.getLatitude());
+                    Log.d(TAG, "Complete: longitude: current realtime position " + geoStart.getLongitude());
+
+
+                    // TODO: 2/26/2021 change this into a method and refactor
+                //------------------------------------------------------------------------------>
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                    DocumentReference locations = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName().toString());
+
+                    Map<String, Object> geoLoc = new HashMap<String, Object>();
+
+                    geoLoc.put("location", geoStart );
+                    locations.update(geoLoc).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("InspiringQuote", "Document has been saved!");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("InspiringQuote", "Document was not saved!", e);
+                        }
+                    });
+
+                    //inserting current user location and running from within getLastKnownLocation
+                    locations.set(geoLoc);
+                 //---------------------------------------------------------------------------->
+
                 }
             }
         });
 
+        return geoStart;
     }
-
-
-
-
 
 
     private boolean checkGooglePlayServices() {
@@ -281,7 +351,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     //target activity
-    public void toTargetActivity(){
+    public void toTargetActivity() {
         Intent intent = new Intent(this, Target.class);
         startActivity(intent);
         this.finish();
@@ -368,21 +438,79 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    private void calculateDirections(MarkerOptions markerOptions) {
+        Log.d(TAG, "calculateDirections: calculating directions.");
+
+        DocumentReference directionsRef;
+        FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        //inserting user location from firestore information by pulling from firestore
+
+
+//        directionsRef = FirebaseFirestore.getInstance().document("sampleData/" + curUser.getDisplayName().toString());
+//        directionsRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if (documentSnapshot.exists()) {
+//                     destinationCords = documentSnapshot.getGeoPoint("location");
+//                     Log.d(TAG, "checking to see if location grabbed from firestore " + destinationCords.getLongitude());
+//                }
+//            }
+//        });
+
+        DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
+        directions.alternatives(false);
+
+        directions.origin(
+                new com.google.maps.model.LatLng(
+                        // TODO: 3/1/2021  need origin from get last known location call to complete directions api
+                        markerOptions.getPosition().latitude,
+                        markerOptions.getPosition().longitude
+                )
+        );
+
+        com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(
+                34.154162, -84.376435
+        );
+
+        Log.d(TAG, "calculateDirections: destination: " + destination.toString());
+        Log.d(TAG, "did this run?");
+        directions.destination(destination).setCallback(new PendingResult.Callback<DirectionsResult>() {
+            @Override
+            public void onResult(DirectionsResult result) {
+                Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
+                Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
+                Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
+                Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                Log.e(TAG, "calculateDirections: Failed to get directions: " + e.getMessage() );
+
+            }
+        });
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap = googleMap;
+        //this is my house
         LatLng latLng = new LatLng(34.140980, -84.357679);
         LatLng walmart = new LatLng(34.149409, -84.249323);
-        MarkerOptions walMarker = new MarkerOptions();
-        walMarker.title("Walmart, Milton");
+        WAL_MARKER.title("Walmart, Milton");
 
+
+        //markerOptions here is referring to my home
+        // TODO: 2/26/2021 change this to my home so that I don't get confused.
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.title("My home");
         //LatLng latLng;
-        walMarker.position(walmart);
+        WAL_MARKER.position(walmart);
         markerOptions.position(latLng);
         googleMap.addMarker(markerOptions);
-        googleMap.addMarker(walMarker);
+        googleMap.addMarker(WAL_MARKER);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
         googleMap.animateCamera(cameraUpdate);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
@@ -400,7 +528,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         googleMap.setMyLocationEnabled(true);
 
-
+        //google maps api key here
+        if(mGeoApiContext == null){
+            mGeoApiContext = new GeoApiContext.Builder()
+                    .apiKey(getString(R.string.google_maps_api_key))
+                    .build();
+        }
 
 
 

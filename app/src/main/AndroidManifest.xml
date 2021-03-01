@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LiveCourierUT3">
-        <activity android:name=".Target"></activity>
+        <activity android:name=".Target">
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -23,9 +25,11 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+        //this is the maps api key for live courier ut3
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBu_5gAiGxj3L4tovkmSfn1Jp9fwoadFNo" />
+
 
 
         <activity android:name=".MainActivity">
