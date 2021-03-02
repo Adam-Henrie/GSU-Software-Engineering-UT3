@@ -6,14 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PersistableBundle;
-import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -26,10 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.live_courier_ut3.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -41,7 +36,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,7 +45,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.maps.DirectionsApiRequest;
@@ -106,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public GeoPoint geoStart;
 
-    public GeoPoint destinationCords;
+    GeoPoint curLoc;
 
 
 
@@ -169,6 +165,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         getLastKnownLocation();
 
 
+        DocumentReference directionsRef;
+
+
 
    //     Log.d(TAG, "Null object? : " + test.getLatitude() + " " + test.getLongitude());
         //walmart starting point 34.149409, -84.249323
@@ -176,7 +175,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         MarkerOptions directionsMarker = new MarkerOptions();
         directionsMarker.position(start);
 
-      //  calculateDirections(directionsMarker);
+
+        directionsRef = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName().toString());
+
+
+        //calling directions request from within grab of location data
+        directionsRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                curLoc = value.getGeoPoint("location") ;
+                Log.d(TAG, "checking to see if location grabbed from firestore " + curLoc.getLongitude());
+                calculateDirections(directionsMarker, curLoc);
+            }
+        });
+
+
 
 
 
@@ -438,26 +451,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    private void calculateDirections(MarkerOptions markerOptions) {
+    private void calculateDirections(MarkerOptions marker, GeoPoint curLoc) {
         Log.d(TAG, "calculateDirections: calculating directions.");
 
-        DocumentReference directionsRef;
-        FirebaseUser curUser = FirebaseAuth.getInstance().getCurrentUser();
+        //google maps api key here
+        if(mGeoApiContext == null){
+            mGeoApiContext = new GeoApiContext.Builder()
+                    .apiKey(getString(R.string.google_maps_api_key))
+                    .build();
+        }
 
+        com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(
+              curLoc.getLatitude(),
+                curLoc.getLongitude()
+        );
 
-        //inserting user location from firestore information by pulling from firestore
-
-
-//        directionsRef = FirebaseFirestore.getInstance().document("sampleData/" + curUser.getDisplayName().toString());
-//        directionsRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                if (documentSnapshot.exists()) {
-//                     destinationCords = documentSnapshot.getGeoPoint("location");
-//                     Log.d(TAG, "checking to see if location grabbed from firestore " + destinationCords.getLongitude());
-//                }
-//            }
-//        });
 
         DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
         directions.alternatives(false);
@@ -465,18 +473,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         directions.origin(
                 new com.google.maps.model.LatLng(
                         // TODO: 3/1/2021  need origin from get last known location call to complete directions api
-                        markerOptions.getPosition().latitude,
-                        markerOptions.getPosition().longitude
+                        marker.getPosition().latitude,
+                        marker.getPosition().longitude
                 )
-        );
-
-        com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(
-                34.154162, -84.376435
         );
 
         Log.d(TAG, "calculateDirections: destination: " + destination.toString());
         Log.d(TAG, "did this run?");
-        directions.destination(destination).setCallback(new PendingResult.Callback<DirectionsResult>() {
+        directions.destination(destination)
+                .setCallback(new PendingResult.Callback<DirectionsResult>() {
             @Override
             public void onResult(DirectionsResult result) {
                 Log.d(TAG, "calculateDirections: routes: " + result.routes[0].toString());
@@ -528,12 +533,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         googleMap.setMyLocationEnabled(true);
 
-        //google maps api key here
-        if(mGeoApiContext == null){
-            mGeoApiContext = new GeoApiContext.Builder()
-                    .apiKey(getString(R.string.google_maps_api_key))
-                    .build();
-        }
+       //geo api context used to be here
 
 
 

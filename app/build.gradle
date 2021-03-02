@@ -44,14 +44,19 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:2.2.0'
 
     //possible crash fixes for calc directions issue
-    //implementation 'com.google.maps.android:android-maps-utils:2.2.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'com.github.seratch:java-time-backport:1.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 
     // Google play services for location information
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     // Google Maps Services (needed for directions)
-    implementation 'com.google.maps:google-maps-services:0.2.9'
+
+    //possibly ridiculously old
+  //  implementation 'com.google.maps:google-maps-services:0.2.9'
+
+    implementation 'com.google.maps:google-maps-services:0.17.0'
     implementation 'org.slf4j:slf4j-nop:1.7.25'
 
     implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
