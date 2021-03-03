@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -24,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
@@ -37,6 +40,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,7 +58,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
+import com.google.maps.internal.PolylineEncoding;
 import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -61,14 +68,65 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+
+    //declaring and setting map variable before on create inside the onMapReady lifecycle method
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+        //this is my house
+        LatLng latLng = new LatLng(34.140980, -84.357679);
+        LatLng walmart = new LatLng(34.149409, -84.249323);
+        WAL_MARKER.title("Walmart, Milton");
+
+
+        //markerOptions here is referring to my home
+        // TODO: 2/26/2021 change this to my home so that I don't get confused.
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.title("My home");
+        //LatLng latLng;
+        WAL_MARKER.position(walmart);
+        markerOptions.position(latLng);
+        googleMap.addMarker(markerOptions);
+        googleMap.addMarker(WAL_MARKER);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
+        googleMap.animateCamera(cameraUpdate);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setCompassEnabled(true);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        googleMap.setMyLocationEnabled(true);
+
+        //geo api context used to be here
+
+
+
+    }
+
+
+
+
+
     // Strings used to capture text input for quote section of app
     public static final String Quote_Key = "quote";
     public static final String Author_Key = "author";
+    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey" ;
 
     //textview for the quote input
     TextView mQuoteTextView;
@@ -92,7 +150,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //map object used for maps
     MapView mapView;
 
-    GoogleMap googleMap;
+     private GoogleMap googleMap;
+
     //location object based in google maps sdk
     private FusedLocationProviderClient mFusedLocationClient;
 
@@ -148,6 +207,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
+
+        initGoogleMap(savedInstanceState);
+
         target = findViewById(R.id.target);
 
         target.setOnClickListener(new View.OnClickListener() {
@@ -193,7 +255,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-    }
+    }   //end onCreate
+
+    private void initGoogleMap(Bundle savedInstanceState) {
+        // *** IMPORTANT ***
+        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
+        // objects or sub-Bundles.
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null) {
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        }
+
+        mapView.onCreate(mapViewBundle);
+
+        mapView.getMapAsync(this);
+
+        if(mGeoApiContext == null){
+            mGeoApiContext = new GeoApiContext.Builder()
+                    .apiKey(getString(R.string.google_maps_api_key))
+                    .build();
+        }
+    } //end initGoogleMap
 
 
     public GeoPoint getLastKnownLocation() {
@@ -488,6 +570,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
                 Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
                 Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
+
+
+                addPolylinesToMap(result);
             }
 
             @Override
@@ -498,46 +583,47 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap = googleMap;
-        //this is my house
-        LatLng latLng = new LatLng(34.140980, -84.357679);
-        LatLng walmart = new LatLng(34.149409, -84.249323);
-        WAL_MARKER.title("Walmart, Milton");
+
+    private void addPolylinesToMap(final DirectionsResult result ){
 
 
-        //markerOptions here is referring to my home
-        // TODO: 2/26/2021 change this to my home so that I don't get confused.
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title("My home");
-        //LatLng latLng;
-        WAL_MARKER.position(walmart);
-        markerOptions.position(latLng);
-        googleMap.addMarker(markerOptions);
-        googleMap.addMarker(WAL_MARKER);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
-        googleMap.animateCamera(cameraUpdate);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.getUiSettings().setCompassEnabled(true);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "run: result routes: " + result.routes.length);
 
-        googleMap.setMyLocationEnabled(true);
+                for(DirectionsRoute route: result.routes){
+                    Log.d(TAG, "run: leg: " + route.legs[0].toString());
+                    List<com.google.maps.model.LatLng> decodedPath = PolylineEncoding.decode(route.overviewPolyline.getEncodedPath());
 
-       //geo api context used to be here
+                    List<LatLng> newDecodedPath = new ArrayList<>();
 
+                    // This loops through all the LatLng coordinates of ONE polyline.
+                    for(com.google.maps.model.LatLng latLng: decodedPath){
 
+//                        Log.d(TAG, "run: latlng: " + latLng.toString());
 
+                        newDecodedPath.add(new LatLng(
+                                latLng.lat,
+                                latLng.lng
+                        ));
+                    }
+
+                    Polyline polyline = googleMap.addPolyline(new PolylineOptions().addAll(newDecodedPath));
+                    polyline.setColor(ContextCompat.getColor(getApplicationContext(), R.color.teal_200));
+                    polyline.setClickable(true);
+
+                }
+            }
+        });
     }
+
+
+
+
+
+
+
 
 
     @Override
@@ -576,7 +662,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        mapView.onSaveInstanceState(outState);
+     //   mapView.onSaveInstanceState(outState);
+
+
+
+        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if (mapViewBundle == null) {
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+
+        mapView.onSaveInstanceState(mapViewBundle);
+
+
+
+
     }
 
     @Override
