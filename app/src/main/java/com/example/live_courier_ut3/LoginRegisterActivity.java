@@ -80,6 +80,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
                 // We have signed in the user or we have a new user
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                 Log.d(TAG, "onActivityResult: " + user.getEmail());
 
                 //creating document reference because of successful login to add data to the firestore database
@@ -88,7 +89,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
 
                 String email = user.getEmail().toString();
-                String userName =  user.getDisplayName().toString();
+                String userName = user.getDisplayName().toString();
 
 
                 String emailKey = "email";
@@ -120,7 +121,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 // we can use this to pass the user name info on to the main activity to make a document reference to make a new Firestore
                 // database entry.
                 if (user.getMetadata().getCreationTimestamp() == user.getMetadata().getLastSignInTimestamp()){
-                    Toast.makeText(this, "Welcome New User" + user.getDisplayName().toString() + " ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Welcome New User" + user.getDisplayName() + " ", Toast.LENGTH_SHORT).show();
                 }
 
                 Intent intent = new Intent(this, MainActivity.class);

@@ -1,6 +1,7 @@
 package com.example.live_courier_ut3;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +22,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -136,10 +139,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
     //firestore firebase data and document references to access information
-    private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("sampleData/inspiration");
-    private DocumentReference rDocRef = FirebaseFirestore.getInstance().document("sampleData/with_more_inspiration");
+    private final DocumentReference mDocRef = FirebaseFirestore.getInstance().document("sampleData/inspiration");
+    private final DocumentReference rDocRef = FirebaseFirestore.getInstance().document("sampleData/with_more_inspiration");
 
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
 
     //main button name "click me" to access information form the server
     Button btn_button;
@@ -163,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     GeoPoint curLoc;
 
-
+    FirebaseUser user;
 
     //creating image buttons for the transfer to each new store page
     //public ImageButton target = new ImageButton(this);
@@ -172,26 +175,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
+    @SuppressLint("ShowToast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        mQuoteTextView = (TextView) findViewById(R.id.quote_display);
-        btn_button = findViewById(R.id.btn_button);
-        EditText tv_quote = findViewById(R.id.et_quote);
-        EditText tv_author = findViewById(R.id.et_author);
-
-
-        //if user hasn't logged in before create an intent which transfers you to the LoginRegisterActivity
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startLoginActivity();
-        }
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         mapView = findViewById(R.id.mapView);
+
+
 
         checkPermission();
         if (isPermissionGranted) {
@@ -208,7 +200,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
+
+       // mQuoteTextView = findViewById(R.id.quote_display);
+       // btn_button = findViewById(R.id.btn_button);
+      //  EditText tv_quote = findViewById(R.id.et_quote);
+       // EditText tv_author = findViewById(R.id.et_author);
+
+
         initGoogleMap(savedInstanceState);
+        //if user hasn't logged in before create an intent which transfers you to the LoginRegisterActivity
+
+
 
         target = findViewById(R.id.target);
 
@@ -227,29 +229,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         getLastKnownLocation();
 
 
-        DocumentReference directionsRef;
-
-
-
    //     Log.d(TAG, "Null object? : " + test.getLatitude() + " " + test.getLongitude());
         //walmart starting point 34.149409, -84.249323
         LatLng start = new LatLng(34.149409, -84.249323);
         MarkerOptions directionsMarker = new MarkerOptions();
         directionsMarker.position(start);
 
-
-        directionsRef = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName().toString());
+        user = FirebaseAuth.getInstance().getCurrentUser();
+       DocumentReference directionsRef = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName().toString());
 
 
         //calling directions request from within grab of location data
-        directionsRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+
+        directionsRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                curLoc = value.getGeoPoint("location") ;
-                Log.d(TAG, "checking to see if location grabbed from firestore " + curLoc.getLongitude());
-                calculateDirections(directionsMarker, curLoc);
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    curLoc = documentSnapshot.getGeoPoint("location") ;
+                    Log.d(TAG, "checking to see if location grabbed from firestore " + curLoc.getLongitude());
+                    calculateDirections(directionsMarker, curLoc);
+                }
             }
         });
+
+
 
 
 
@@ -280,6 +283,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public GeoPoint getLastKnownLocation() {
         Log.d(TAG, "getLastKnownLocation: called.");
+
+
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+
+            startLoginActivity();
+        }
 // marker spoof location method
 //        LatLng startPos = new LatLng(34.140980,-84.357679);
 //        Location mockLocation = new Location(LocationManager.GPS_PROVIDER); // a string
@@ -337,9 +346,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     // TODO: 2/26/2021 change this into a method and refactor
                 //------------------------------------------------------------------------------>
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                     user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    DocumentReference locations = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName().toString());
+                    DocumentReference locations = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName());
 
                     Map<String, Object> geoLoc = new HashMap<String, Object>();
 
@@ -436,8 +445,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return false;
     }
 
-    ;
-
 
     public void startLoginActivity() {
         Intent intent = new Intent(this, LoginRegisterActivity.class);
@@ -483,54 +490,54 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public void fetchQuote(View view) {
-        mDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    String quoteText = documentSnapshot.getString(Quote_Key);
-                    String authorText = documentSnapshot.getString(Author_Key);
-                    mQuoteTextView.setText("\"" + quoteText + "\" -- " + authorText);
-                }
-            }
-        });
-
-    }
-
-
-    public void saveQuote(View view) {
-        EditText quoteView = findViewById(R.id.et_quote);
-        EditText authorView = findViewById(R.id.et_author);
-        String quoteText = quoteView.getText().toString();
-        String authorText = authorView.getText().toString();
+//    public void fetchQuote(View view) {
+//        mDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if (documentSnapshot.exists()) {
+//                    String quoteText = documentSnapshot.getString(Quote_Key);
+//                    String authorText = documentSnapshot.getString(Author_Key);
+//                    mQuoteTextView.setText("\"" + quoteText + "\" -- " + authorText);
+//                }
+//            }
+//        });
+//
+//    }
 
 
-        if (quoteText.isEmpty() || authorText.isEmpty()) {
-            return;
-        }
-        Map<String, Object> dataToSave = new HashMap<String, Object>();
-        dataToSave.put(Quote_Key, quoteText);
-        dataToSave.put(Author_Key, authorText);
-        Map<String, Object> dataToAdd = new HashMap<String, Object>();
-        dataToAdd.put(Quote_Key, quoteText);
-        dataToAdd.put(Author_Key, authorText);
-
-        mDocRef.update(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("InspiringQuote", "Document has been saved!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w("InspiringQuote", "Document was not saved!", e);
-            }
-        });
-
-
-        mDocRef.set(dataToSave);
-
-    }
+//    public void saveQuote(View view) {
+//        EditText quoteView = findViewById(R.id.et_quote);
+//        EditText authorView = findViewById(R.id.et_author);
+//        String quoteText = quoteView.getText().toString();
+//        String authorText = authorView.getText().toString();
+//
+//
+//        if (quoteText.isEmpty() || authorText.isEmpty()) {
+//            return;
+//        }
+//        Map<String, Object> dataToSave = new HashMap<String, Object>();
+//        dataToSave.put(Quote_Key, quoteText);
+//        dataToSave.put(Author_Key, authorText);
+//        Map<String, Object> dataToAdd = new HashMap<String, Object>();
+//        dataToAdd.put(Quote_Key, quoteText);
+//        dataToAdd.put(Author_Key, authorText);
+//
+//        mDocRef.update(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Log.d("InspiringQuote", "Document has been saved!");
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.w("InspiringQuote", "Document was not saved!", e);
+//            }
+//        });
+//
+//
+//        mDocRef.set(dataToSave);
+//
+//    }
 
 
     private void calculateDirections(MarkerOptions marker, GeoPoint curLoc) {

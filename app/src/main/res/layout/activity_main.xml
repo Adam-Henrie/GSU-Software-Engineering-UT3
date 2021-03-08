@@ -6,84 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btn_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:onClick="saveQuote"
-        android:text="click me"
-        app:layout_constraintBottom_toTopOf="@+id/btn_fetch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.808"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_author" />
-
-    <EditText
-        android:id="@+id/et_quote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="quote"
-        app:layout_constraintBottom_toTopOf="@+id/et_author"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/et_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="author"
-        app:layout_constraintBottom_toTopOf="@+id/btn_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.92"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_quote" />
-
-    <Button
-        android:id="@+id/btn_fetch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="fetchQuote"
-        android:text="Fetch"
-        app:layout_constraintBottom_toTopOf="@+id/quote_display"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.78"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_button" />
-
-    <TextView
-        android:id="@+id/quote_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:hint="Inspring text here"
-
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_fetch" />
-
 
     <ImageButton
         android:id="@+id/walmart"
         android:layout_width="237dp"
         android:layout_height="67dp"
         android:layout_marginRight="132dp"
-        android:layout_marginBottom="90dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="centerCrop"
         android:src="@drawable/walmart"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/quote_display"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/target"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/target" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
@@ -91,23 +25,20 @@
         android:layout_height="183dp"
         android:layout_marginStart="29dp"
         android:layout_marginLeft="29dp"
-        android:layout_marginTop="162dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="31dp"
         android:layout_marginRight="31dp"
-        android:layout_marginBottom="140dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quote_display" />
+        app:layout_constraintTop_toBottomOf="@+id/taco_bell" />
 
     <ImageButton
         android:id="@+id/target"
         android:layout_width="104dp"
         android:layout_height="90dp"
-        android:layout_marginTop="17dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="fitCenter"
-        app:layout_constraintEnd_toStartOf="@+id/et_author"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/target_logo" />
@@ -116,17 +47,47 @@
         android:id="@+id/taco_bell"
         android:layout_width="85dp"
         android:layout_height="96dp"
-        android:layout_marginRight="160dp"
-        android:layout_marginBottom="60dp"
         android:background="?attr/selectableItemBackground"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@id/quote_display"
-        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/btn_fetch"
         app:layout_constraintTop_toBottomOf="@id/walmart"
-        app:layout_constraintVertical_bias="0.09"
         app:srcCompat="@drawable/taco_bell" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Target Shopping"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toEndOf="@+id/target"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Walmart Shopping"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/walmart"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Taco Bell Take Out"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.431"
+        app:layout_constraintStart_toEndOf="@+id/taco_bell"
+        app:layout_constraintTop_toBottomOf="@+id/walmart" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
