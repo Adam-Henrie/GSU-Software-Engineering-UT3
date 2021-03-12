@@ -33,10 +33,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class Target extends AppCompatActivity {
+public class Cart extends AppCompatActivity {
 
 
-    private static final String TAG = "TargetActivity";
+    private static final String TAG = "CartActivity";
     LocationManager locationManager;
     LocationListener locationListener;
 
@@ -47,17 +47,17 @@ public class Target extends AppCompatActivity {
     private ArrayList<String> mImagePrices = new ArrayList<>();
     private ArrayList<String> mItemQuantity = new ArrayList<>();
     public String storeLookup = "store";
-   // public String store;
+    // public String store;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_list);
+        setContentView(R.layout.cart_item_list);
         Intent intent = getIntent();
         String store;
         store = intent.getStringExtra(storeLookup);
-       // store = "Taco Bell";
+        // store = "Taco Bell";
         Log.d(TAG, "onCreate: " + store);
 
         initImageBitmaps(store);
@@ -80,22 +80,22 @@ public class Target extends AppCompatActivity {
                     ArrayList<Map<String, String>> itemMap = new ArrayList<>();
                     itemMap = (ArrayList<Map<String, String>>) documentSnapshot.get("itemList");
                     for(int i = 0; i < itemMap.size(); i++){
-                            HashMap<String,String> hashMap = new HashMap<String, String>();
-                            hashMap = (HashMap<String, String>) itemMap.get(i);
-                            Iterator<String> mapItr = hashMap.keySet().iterator();
-                            while(mapItr.hasNext()){
-                                String key = mapItr.next();
-                                mNames.add(key);
-                                mImageUrls.add(hashMap.get(key) );
+                        HashMap<String,String> hashMap = new HashMap<String, String>();
+                        hashMap = (HashMap<String, String>) itemMap.get(i);
+                        Iterator<String> mapItr = hashMap.keySet().iterator();
+                        while(mapItr.hasNext()){
+                            String key = mapItr.next();
+                            mNames.add(key);
+                            mImageUrls.add(hashMap.get(key) );
 
-                            }
+                        }
                         Log.d(TAG, "onSuccess: mNames " + mNames.toString() );
                         Log.d(TAG, "onSuccess:  " + mImageUrls.toString() );
 
                     }
 
                 }
-        }
+            }
 
         });
 
@@ -111,12 +111,14 @@ public class Target extends AppCompatActivity {
                     mImagePrices.addAll(transfer);
                     Log.d(TAG, "prices " +  transfer.toString());
 
-                    }
-
                 }
-            });
 
+            }
+        });
 
+// TODO: 3/11/2021  this needs to have a DocumentReference to the user cart with the number of Items that are intended to be ordered. 
+        
+        
         DocumentReference mDocRe = FirebaseFirestore.getInstance().document("stores/" + stored  + "/itemInfo/items");
         Log.d(TAG, "initImageBitmaps:          " + stored);
         mDocRe.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -141,63 +143,60 @@ public class Target extends AppCompatActivity {
 
 
 
-        mImageUrls.add("https://d2cdo4blch85n8.cloudfront.net/wp-content/uploads/2020/06/Sony-PlayStation-5-Officially-Announced-image-2.jpg");
-        mNames.add("PS5");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://i.redd.it/bxocx21yeqq01.jpg");
-        mNames.add("Deluxe Target Puppo");
-        mImagePrices.add("$25000.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://www.joehxblog.com/images/certs/wright-state-university-bachelor-of-science-in-computer-science.png");
-        mNames.add("Bachelor of Science Computer Science");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://shop.jtglobal.com/wp-content/uploads/2020/10/iphone-12-red.jpg");
-        mNames.add("iPhone 12");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-
-        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mNames.add("Mahahual");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mNames.add("Frozen Lake");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-
-        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-        mNames.add("White Sands Desert");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mNames.add("Austrailia");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-        mNames.add("Washington");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
+//        mImageUrls.add("https://d2cdo4blch85n8.cloudfront.net/wp-content/uploads/2020/06/Sony-PlayStation-5-Officially-Announced-image-2.jpg");
+//        mNames.add("PS5");
+//        mImagePrices.add("$5.00");
+//        mItemQuantity.add("20");
+//
+//        mImageUrls.add("https://i.redd.it/bxocx21yeqq01.jpg");
+//        mNames.add("Deluxe Target Puppo");
+//        mImagePrices.add("$25000.00");
+//        mItemQuantity.add("20");
+//
+//        mImageUrls.add("https://www.joehxblog.com/images/certs/wright-state-university-bachelor-of-science-in-computer-science.png");
+//        mNames.add("Bachelor of Science Computer Science");
+//        mImagePrices.add("$5.00");
+//        mItemQuantity.add("20");
+//
+//        mImageUrls.add("https://shop.jtglobal.com/wp-content/uploads/2020/10/iphone-12-red.jpg");
+//        mNames.add("iPhone 12");
+//        mImagePrices.add("$5.00");
+//        mItemQuantity.add("20");
+//
+//
+//        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
+//        mNames.add("Mahahual");
+//        mImagePrices.add("$5.00");
+//        mItemQuantity.add("20");
+//
+//        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
+//        mNames.add("Frozen Lake");
+//        mImagePrices.add("$5.00");
+//        mItemQuantity.add("20");
+//
+//
+//        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
+//        mNames.add("White Sands Desert");
+//        mImagePrices.add("$5.00");
+//        mItemQuantity.add("20");
+//
+//        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
+//        mNames.add("Austrailia");
+//        mImagePrices.add("$5.00");
+//        mItemQuantity.add("20");
+//
+//        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
+//        mNames.add("Washington");
+//        mImagePrices.add("$5.00");
+//        mItemQuantity.add("20");
 
         initRecyclerView();
     }
 
     private void initRecyclerView(){
-        Intent intent = getIntent();
-        String store;
-        store = intent.getStringExtra(storeLookup);
         Log.d(TAG, "initRecyclerView: init recyclerview.");
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls,mImagePrices, mItemQuantity, store);
+        CartRecyclerViewAdapter adapter = new CartRecyclerViewAdapter(this, mNames, mImageUrls,mImagePrices, mItemQuantity);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp"
+    android:layout_marginTop="150dp"
     android:id="@+id/parent_layout"
     >
 
@@ -13,7 +14,7 @@
         android:layout_height="80dp"
         android:id="@+id/image"
         android:src="@mipmap/ic_launcher"
-     />
+        />
 
     <TextView
         android:id="@+id/image_name"
@@ -46,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/image_name"
         android:layout_marginLeft="100dp"
-        android:text="number of items left"
+        android:text="number of items ordered"
         android:textSize="17sp"
         android:translationX="10dp"
         android:translationY="-5dp" />

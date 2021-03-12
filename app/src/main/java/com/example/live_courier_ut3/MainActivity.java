@@ -171,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //creating image buttons for the transfer to each new store page
     //public ImageButton target = new ImageButton(this);
     public ImageButton target;
+    public ImageButton walmart;
+    public ImageButton taco_bell;
     public static final MarkerOptions WAL_MARKER = new MarkerOptions();
 
 
@@ -214,14 +216,42 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         target = findViewById(R.id.target);
 
+        walmart = findViewById(R.id.walmart);
+
+
+        taco_bell = findViewById(R.id.taco_bell);
+
         target.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String storeLookup = "store";
                 Intent toTarget = new Intent(v.getContext(), Target.class);
+                toTarget.putExtra(storeLookup, "Target");
                 startActivity(toTarget);
 
             }
         });
+        walmart.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                String storeLookup = "store";
+                Intent toWalmart = new Intent(v.getContext(), Target.class);
+                getIntent().putExtra(storeLookup,"Walmart");
+
+                startActivity(toWalmart);
+            }
+        });
+        taco_bell.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                String storeLookup = "store";
+                Intent toTaco_bell = new Intent(v.getContext(), Target.class);
+                toTaco_bell.putExtra(storeLookup, "Taco Bell");
+               // getIntent().putExtra(storeLookup, "Taco Bell");
+                startActivity(toTaco_bell);
+            }
+        });
+
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -483,6 +513,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         });
                 return true;
+            case R.id.cart:
+                Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
+                        Intent toCart = new Intent(this, Cart.class);
+                        startActivity(toCart);
+
+
+
+
         }
 
 

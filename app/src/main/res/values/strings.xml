@@ -98,4 +98,7 @@
     <string name="google_maps_api_key">AIzaSyBu_5gAiGxj3L4tovkmSfn1Jp9fwoadFNo</string>
     <string name="login_register">Login/Register</string>
     <string name="first_item">First item</string>
+    <string name="item_price">Item Price</string>
+    <string name="Logout">Logout</string>
+    <string name="Cart">Cart</string>
 </resources>
