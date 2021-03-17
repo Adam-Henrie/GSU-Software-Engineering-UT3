@@ -41,13 +41,22 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_layout_listitem, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.cart_layout_listitem, parent, false);
         ViewHolder holder = new ViewHolder(view);
-        return holder;
+
+        Log.d(TAG, "This has been called");
+
+
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+       return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position ) {
         Log.d(TAG, "onBindViewHolder: called.");
 
         Glide.with(mContext)
@@ -76,7 +85,7 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
 
     @Override
     public int getItemCount() {
-        return mImageNames.size() ;
+        return mImageNames.size()  ;
     }
 
 

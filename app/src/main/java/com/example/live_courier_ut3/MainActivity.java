@@ -28,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -80,7 +81,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 
-    //declaring and setting map variable before on create inside the onMapReady lifecycle method
+    //declari6547ng and setting map variable before on create inside the onMapReady lifecycle method
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public ImageButton target;
     public ImageButton walmart;
     public ImageButton taco_bell;
+
     public static final MarkerOptions WAL_MARKER = new MarkerOptions();
 
 
@@ -513,19 +515,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         });
                 return true;
+
             case R.id.cart:
-                Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
+
+             Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
+                        String storeLookup = "store";
                         Intent toCart = new Intent(this, Cart.class);
+                        toCart.putExtra(storeLookup, "Target");
                         startActivity(toCart);
 
 
+                return true;
 
-
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
 
-        return super.onOptionsItemSelected(item);
     }
+
+
+
+
 
 
 //    public void fetchQuote(View view) {

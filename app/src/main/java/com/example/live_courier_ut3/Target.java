@@ -61,12 +61,14 @@ public class Target extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + store);
 
         initImageBitmaps(store);
-
+   //     Toast.makeText(this,"made it to target activity", Toast.LENGTH_LONG).show();
 
     }
 
     private void initImageBitmaps(String store){
+
         String stored = store;
+
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
 
@@ -136,59 +138,16 @@ public class Target extends AppCompatActivity {
         });
 
 
+//        mImageUrls.add("https://www.pngpix.com/wp-content/uploads/2016/11/PNGPIX-COM-Target-PNG-Transparent-Image-1-500x500.png");
+//        mNames.add("Target (do not click)");
+//        mItemQuantity.add("This is a placeholder item to initialize the list");
+//        mImagePrices.add("-");
 
 
-
-
-
-        mImageUrls.add("https://d2cdo4blch85n8.cloudfront.net/wp-content/uploads/2020/06/Sony-PlayStation-5-Officially-Announced-image-2.jpg");
-        mNames.add("PS5");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://i.redd.it/bxocx21yeqq01.jpg");
-        mNames.add("Deluxe Target Puppo");
-        mImagePrices.add("$25000.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://www.joehxblog.com/images/certs/wright-state-university-bachelor-of-science-in-computer-science.png");
-        mNames.add("Bachelor of Science Computer Science");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://shop.jtglobal.com/wp-content/uploads/2020/10/iphone-12-red.jpg");
-        mNames.add("iPhone 12");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-
-        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mNames.add("Mahahual");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mNames.add("Frozen Lake");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-
-        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-        mNames.add("White Sands Desert");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mNames.add("Austrailia");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
-
-        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-        mNames.add("Washington");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
 
         initRecyclerView();
+
+
     }
 
     private void initRecyclerView(){
@@ -196,7 +155,12 @@ public class Target extends AppCompatActivity {
         String store;
         store = intent.getStringExtra(storeLookup);
         Log.d(TAG, "initRecyclerView: init recyclerview.");
+        // create a layout manager
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
+
+     //   recyclerView.setLayoutManager(linearLayoutManager);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls,mImagePrices, mItemQuantity, store);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -227,10 +191,21 @@ public class Target extends AppCompatActivity {
                             }
                         });
                 return true;
+            case R.id.cart:
+
+                Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
+                String storeLookup = "store";
+                Intent toCart = new Intent(this, Cart.class);
+                toCart.putExtra(storeLookup, "Target");
+                startActivity(toCart);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
 
-        return super.onOptionsItemSelected(item);
+
     }
 
     public void startLoginActivity() {

@@ -85,10 +85,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
                 public void onClick(View view) {
                     Log.d(TAG, "onClick: clicked on: " + mImageNames.get(position));
 
-                    DocumentReference mCartRef = FirebaseFirestore.getInstance().document("users/" +
-                            "Adam Henrie" +
+                    DocumentReference mCartRef = FirebaseFirestore.getInstance().document(
+                            "users/" +
+                                     "Adam Henrie" +
                                     "/storeCart/" +
-                                    mStoreName +"Cart"
+                                    mStoreName +
+                                    "Cart"
                             );
                     DocumentReference mDocRef = FirebaseFirestore.getInstance().document("stores/" + mStoreName + "/itemInfo/items");
 
@@ -96,47 +98,64 @@ import de.hdodenhof.circleimageview.CircleImageView;
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
+                        //getting itemList from firestore for selection of the item that was clicked in the app
                         String itemBuy = (mImageNames.get(position));
                         ArrayList<Map<String,String>> itemArrayMapList = (ArrayList<Map<String, String>>) documentSnapshot.get("itemList");
+
+                        //getting prices and number of items for putting into the storeCart
+                        List<String> itemAmnt = new ArrayList<>();
+                        List<String> itemPrice = new ArrayList<>();
+                        itemAmnt = (List<String>) documentSnapshot.get("itemNumber");
+                        itemPrice = (List<String>) documentSnapshot.get("prices");
+
+                        //grabbing the string values of the price and number items left and setting them to a string
+                        String numUpdate = itemAmnt.get(itemArrayMapList.indexOf(itemBuy) + position);
+                        String priceUp = itemPrice.get(itemArrayMapList.indexOf(itemBuy) + position);
+
                         Log.d(TAG, "checking name info " + itemBuy);
                         Log.d(TAG, "checking itemArrayMapList " + itemArrayMapList.toString() );
+                        Log.d(TAG, "checking to see if itemArrayMapList.get(itemBuy) works" + itemArrayMapList.get(itemArrayMapList.indexOf(itemBuy) + position )); // used to be + 1 I believe that having the icon of Target pre loaded fixes this
                           assert itemArrayMapList != null;
                        // int loc = itemArrayMapList.indexOf(itemBuy) + 1; //used to have a plus 1
                         Log.d(TAG, "checking size of itemArrayMapList" + itemArrayMapList.size());
-                    //    Log.d(TAG,"checking to see if we get the location of first item  " + (itemArrayMapList.indexOf(itemBuy) + 1));
-                     //   Map<String,Object> itemToSave = new HashMap<>();
 
-                    //    itemToSave.put("itemList",itemArrayMapList.get(loc).keySet());
-                     //   Log.d(TAG, "checking to see if it is a array with a map in it" + itemToSave );
 
+
+
+                        //this refence for grabbing things from the cart in firestore
                         mCartRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-//                                try {
-//                                    Thread.sleep(1000);
-//                                } catch (InterruptedException e) {
-//                                    e.printStackTrace();
-//                                }
 
                                 ArrayList<Map<String,String>> overwrite = new ArrayList<Map<String,String>>();
                                         overwrite = (ArrayList<Map<String,String>>) documentSnapshot.get("itemList");
                                         List<Map<String,String>> list = new ArrayList<>();
                                         list.addAll(overwrite);
-                                Log.d(TAG, "checking to see if list gets the items" + list.toString());
+                                        Log.d(TAG, "checking to see if list gets the items" + list.toString());
 
                                        // String output = Arrays.toString(itemArrayMapList.get(loc).keySet().toArray()).replace("[", "").replace("]", "");
                                         //list.add(itemArrayMapList.get(loc).keySet().toString());
 
                                         Map<String,String> output = new HashMap<>();
-                                        output = itemArrayMapList.get(itemArrayMapList.indexOf(itemBuy) + 1);
-                                Log.d(TAG, "checking to see if list get items output" + output);
+                                        Log.d(TAG, "checking to see the value of position" + position);
+
+                                        //appending the item clicked to the list of items that was in the cart already
+                                        output = itemArrayMapList.get(itemArrayMapList.indexOf(itemBuy) + position ); // used to be + 1 I believe that having the icon of Target pre loaded fixes this
+                                        Log.d(TAG, "checking to see if list get items output" + output);
                                         list.add(output);
                                         Log.d(TAG, "checking to see if list get items" + list.toString());
 
-                                      //  String[] array = overwrite.toArray(new String[overwrite.size()] );
-                                    //    Log.d(TAG, "checking to see what the array looks like" + overwrite.toString() );
 
+
+                                //now working on grabbing the item Number and prices array from the firestore cart
+                                        List<String> numberUpdate = (List<String>) documentSnapshot.get("itemNumber");
+                                        List<String> priceUpdate = (List<String>) documentSnapshot.get("prices");
+                                        //adding strings to the grabbed list
+                                        numberUpdate.add(numUpdate);
+                                        priceUpdate.add(priceUp);
+
+                                            //appending the new list created with all the old items plus the new item that was just clicked.
                                             mCartRef.update("itemList", list  ).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
@@ -148,18 +167,29 @@ import de.hdodenhof.circleimageview.CircleImageView;
                                                     Log.w("Item failure", "Item was not saved", e);
                                                 }
                                             });
+                                            mCartRef.update("itemNumber", numberUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d("Item Number", " Item number added");
+                                                }
+                                            });
+                                            mCartRef.update("prices", priceUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d("Item Price", " Item price added");
+                                                }
+                                            });
 
-
-                                         //   mCartRef.set(array);
+                                         //   mCartRef.set(array); didn't set it for some odd reason
                             }
                         });
 
                     }
                 }
             });
-                    Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mImageNames.get(position) + " added to the cart!", Toast.LENGTH_SHORT).show();
 
-                   // toCartActivity(mStoreName);
+                  //  toCartActivity(mStoreName);
                 }
             });
         }

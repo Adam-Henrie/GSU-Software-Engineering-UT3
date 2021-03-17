@@ -23,14 +23,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class Cart extends AppCompatActivity {
@@ -43,11 +47,14 @@ public class Cart extends AppCompatActivity {
 
     //vars
     private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ArrayList<String> mImagePrices = new ArrayList<>();
+    public ArrayList<String> mImageUrls = new ArrayList<>();
+
+    public GetUrls getUrl;
+    public ArrayList<String> mImagePrices = new ArrayList<>();
     private ArrayList<String> mItemQuantity = new ArrayList<>();
     public String storeLookup = "store";
     // public String store;
+    public CartRecyclerViewAdapter adapter;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
@@ -60,18 +67,18 @@ public class Cart extends AppCompatActivity {
         // store = "Taco Bell";
         Log.d(TAG, "onCreate: " + store);
 
-        initImageBitmaps(store);
 
-
+        initImageBitmaps();
+        initRecyclerView();
     }
 
-    private void initImageBitmaps(String store){
-        String stored = store;
+    private void initImageBitmaps(){
+     //   String stored = store;
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
 
-        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("stores/" + stored  + "/itemInfo/items");
-        Log.d(TAG, "initImageBitmaps:          " + stored);
+        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
+   //     Log.d(TAG, "initImageBitmaps:          " + stored);
         mDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -87,20 +94,24 @@ public class Cart extends AppCompatActivity {
                             String key = mapItr.next();
                             mNames.add(key);
                             mImageUrls.add(hashMap.get(key) );
-
                         }
                         Log.d(TAG, "onSuccess: mNames " + mNames.toString() );
                         Log.d(TAG, "onSuccess:  " + mImageUrls.toString() );
 
                     }
 
+
                 }
+               //     getUrl.addUrl(mImageUrls);
+                 //   Log.d(TAG, "class working?" + getUrl.getImageUrls().toString());
             }
 
         });
 
-        DocumentReference mDocR = FirebaseFirestore.getInstance().document("stores/" + stored  + "/itemInfo/items");
-        Log.d(TAG, "initImageBitmaps:          " + stored);
+
+
+        DocumentReference mDocR = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
+       // Log.d(TAG, "initImageBitmaps:          " + stored);
         mDocR.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -109,8 +120,8 @@ public class Cart extends AppCompatActivity {
                     ArrayList<String> transfer = (ArrayList<String>) documentSnapshot.get("prices");
                     assert transfer != null;
                     mImagePrices.addAll(transfer);
-                    Log.d(TAG, "prices " +  transfer.toString());
-
+                   // Log.d(TAG, "prices " +  transfer.toString());
+                  //  Log.d(TAG, "image urls inside getting prices" + transfer.toString());
                 }
 
             }
@@ -119,8 +130,8 @@ public class Cart extends AppCompatActivity {
 // TODO: 3/11/2021  this needs to have a DocumentReference to the user cart with the number of Items that are intended to be ordered. 
         
         
-        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("stores/" + stored  + "/itemInfo/items");
-        Log.d(TAG, "initImageBitmaps:          " + stored);
+        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
+   //     Log.d(TAG, "initImageBitmaps:          " + stored);
         mDocRe.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -140,65 +151,45 @@ public class Cart extends AppCompatActivity {
 
 
 
+        mImageUrls.add("https://d2cdo4blch85n8.cloudfront.net/wp-content/uploads/2020/06/Sony-PlayStation-5-Officially-Announced-image-2.jpg");
+        mNames.add("PS5");
+        mImagePrices.add("$5.00");
+        mItemQuantity.add("20");
+
+        Log.d(TAG, "prices array test " + mImagePrices);
+      Log.d(TAG, "current image urlsssss" +  mImageUrls.toString() )   ;
+
+     //   adapter.notifyDataSetChanged();
+
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
 
 
-//        mImageUrls.add("https://d2cdo4blch85n8.cloudfront.net/wp-content/uploads/2020/06/Sony-PlayStation-5-Officially-Announced-image-2.jpg");
-//        mNames.add("PS5");
-//        mImagePrices.add("$5.00");
-//        mItemQuantity.add("20");
-//
-//        mImageUrls.add("https://i.redd.it/bxocx21yeqq01.jpg");
-//        mNames.add("Deluxe Target Puppo");
-//        mImagePrices.add("$25000.00");
-//        mItemQuantity.add("20");
-//
-//        mImageUrls.add("https://www.joehxblog.com/images/certs/wright-state-university-bachelor-of-science-in-computer-science.png");
-//        mNames.add("Bachelor of Science Computer Science");
-//        mImagePrices.add("$5.00");
-//        mItemQuantity.add("20");
-//
-//        mImageUrls.add("https://shop.jtglobal.com/wp-content/uploads/2020/10/iphone-12-red.jpg");
-//        mNames.add("iPhone 12");
-//        mImagePrices.add("$5.00");
-//        mItemQuantity.add("20");
-//
-//
-//        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-//        mNames.add("Mahahual");
-//        mImagePrices.add("$5.00");
-//        mItemQuantity.add("20");
-//
-//        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-//        mNames.add("Frozen Lake");
-//        mImagePrices.add("$5.00");
-//        mItemQuantity.add("20");
-//
-//
-//        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-//        mNames.add("White Sands Desert");
-//        mImagePrices.add("$5.00");
-//        mItemQuantity.add("20");
-//
-//        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-//        mNames.add("Austrailia");
-//        mImagePrices.add("$5.00");
-//        mItemQuantity.add("20");
-//
-//        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-//        mNames.add("Washington");
-//        mImagePrices.add("$5.00");
-//        mItemQuantity.add("20");
 
-        initRecyclerView();
+
     }
 
     private void initRecyclerView(){
         Log.d(TAG, "initRecyclerView: init recyclerview.");
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = new RecyclerView(this);
+       recyclerView = findViewById(R.id.cart_recycler_view);
+       // recyclerView.getPreserveFocusAfterLayout();
         CartRecyclerViewAdapter adapter = new CartRecyclerViewAdapter(this, mNames, mImageUrls,mImagePrices, mItemQuantity);
+
+        adapter.setHasStableIds(true);
+        adapter.notifyDataSetChanged();
+        recyclerView.refreshDrawableState();
+     //   recyclerView.invalidate();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+       // recyclerView.setHasFixedSize(false);
+
     }
 
 
@@ -226,10 +217,21 @@ public class Cart extends AppCompatActivity {
                             }
                         });
                 return true;
+
+            case R.id.cart:
+            Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
+            String storeLookup = "store";
+            Intent toCart = new Intent(this.getApplicationContext(), Cart.class);
+            toCart.putExtra(storeLookup, "Target");
+            startActivity(toCart);
+
+
+            return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void startLoginActivity() {
