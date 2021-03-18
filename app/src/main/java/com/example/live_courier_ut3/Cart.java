@@ -49,7 +49,7 @@ public class Cart extends AppCompatActivity {
     private ArrayList<String> mNames = new ArrayList<>();
     public static final ArrayList<String> mImageUrls = new ArrayList<>();
 
-    public GetUrls getUrl;
+  //  public GetUrls getUrl;
     public ArrayList<String> mImagePrices = new ArrayList<>();
     private ArrayList<String> mItemQuantity = new ArrayList<>();
     public String storeLookup = "store";

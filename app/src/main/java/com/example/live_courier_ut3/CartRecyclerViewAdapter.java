@@ -77,6 +77,11 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<CartRecyclerVi
 
                 Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
 
+                Log.d(TAG, "creating item details page");
+
+
+
+
 
             }
         });

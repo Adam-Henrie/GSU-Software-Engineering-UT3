@@ -1,6 +1,7 @@
 package com.example.live_courier_ut3;
 
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 
@@ -80,6 +81,23 @@ import de.hdodenhof.circleimageview.CircleImageView;
             holder.imagePrice.setText(mImagePrices.get(position));
             holder.itemQuantity.setText(mItemQuantity.get(position));
 
+            holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    String storeLookup = "store";
+                    String itemLookup = "itemLookup";
+                    String itemName = mImageNames.get(position);
+                    Toast.makeText(mContext, mImageNames.get(position) + " long click detected", Toast.LENGTH_SHORT).show();
+                    //returning true means that the short click will not be run
+                    Intent toItemPage = new Intent(mContext, ItemPage.class);
+                    toItemPage.putExtra(storeLookup, mStoreName);
+                    toItemPage.putExtra(itemLookup, itemName);
+                    mContext.startActivity(toItemPage);
+                    return true;
+                }
+            });
+
+            //this is a short click event
             holder.parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

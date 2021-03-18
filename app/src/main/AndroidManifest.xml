@@ -48,6 +48,10 @@
 
         </activity>
 
+        <activity android:name=".ItemPage">
+
+        </activity>
+
     </application>
 
 </manifest>

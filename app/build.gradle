@@ -97,6 +97,9 @@ dependencies {
     //circle imageview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    //image url download for item page (library)
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }
 
 
