@@ -45,7 +45,9 @@ public class LoginRegisterActivity extends AppCompatActivity {
         if (FirebaseAuth.getInstance().getCurrentUser()  != null    ){
             startActivity(new Intent(this, MainActivity.class));
             this.finish();
+            return;
         }
+
 
     }
 
@@ -69,6 +71,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
         startActivityForResult(intent, AUTHUI_REQUEST_CODE);
 
+
     }
 
     @Override
@@ -80,6 +83,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
                 // We have signed in the user or we have a new user
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                Log.d(TAG, "is the login activity working?" + user.getDisplayName());
 
                 Log.d(TAG, "onActivityResult: " + user.getEmail());
 

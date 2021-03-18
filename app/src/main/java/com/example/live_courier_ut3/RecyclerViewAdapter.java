@@ -109,12 +109,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
                         itemPrice = (List<String>) documentSnapshot.get("prices");
 
                         //grabbing the string values of the price and number items left and setting them to a string
-                        String numUpdate = itemAmnt.get(itemArrayMapList.indexOf(itemBuy) + position);
-                        String priceUp = itemPrice.get(itemArrayMapList.indexOf(itemBuy) + position);
+                        String numUpdate = itemAmnt.get(itemArrayMapList.indexOf(itemBuy) + position + 1); // used to not have + 1
+                        String priceUp = itemPrice.get(itemArrayMapList.indexOf(itemBuy) + position + 1); // used to not have + 1
 
                         Log.d(TAG, "checking name info " + itemBuy);
                         Log.d(TAG, "checking itemArrayMapList " + itemArrayMapList.toString() );
-                        Log.d(TAG, "checking to see if itemArrayMapList.get(itemBuy) works" + itemArrayMapList.get(itemArrayMapList.indexOf(itemBuy) + position )); // used to be + 1 I believe that having the icon of Target pre loaded fixes this
+                        Log.d(TAG, "checking to see if itemArrayMapList.get(itemBuy) works" + itemArrayMapList.get(itemArrayMapList.indexOf(itemBuy) + position + 1 )); // used to be + 1 I believe that having the icon of Target pre loaded fixes this
                           assert itemArrayMapList != null;
                        // int loc = itemArrayMapList.indexOf(itemBuy) + 1; //used to have a plus 1
                         Log.d(TAG, "checking size of itemArrayMapList" + itemArrayMapList.size());
@@ -141,7 +141,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
                                         Log.d(TAG, "checking to see the value of position" + position);
 
                                         //appending the item clicked to the list of items that was in the cart already
-                                        output = itemArrayMapList.get(itemArrayMapList.indexOf(itemBuy) + position ); // used to be + 1 I believe that having the icon of Target pre loaded fixes this
+                                        output = itemArrayMapList.get(itemArrayMapList.indexOf(itemBuy) + position + 1 ); // used to be + 1 I believe that having the icon of Target pre loaded fixes this
                                         Log.d(TAG, "checking to see if list get items output" + output);
                                         list.add(output);
                                         Log.d(TAG, "checking to see if list get items" + list.toString());

@@ -47,7 +47,7 @@ public class Cart extends AppCompatActivity {
 
     //vars
     private ArrayList<String> mNames = new ArrayList<>();
-    public ArrayList<String> mImageUrls = new ArrayList<>();
+    public static final ArrayList<String> mImageUrls = new ArrayList<>();
 
     public GetUrls getUrl;
     public ArrayList<String> mImagePrices = new ArrayList<>();
@@ -69,7 +69,7 @@ public class Cart extends AppCompatActivity {
 
 
         initImageBitmaps();
-        initRecyclerView();
+
     }
 
     private void initImageBitmaps(){
@@ -151,13 +151,13 @@ public class Cart extends AppCompatActivity {
 
 
 
-        mImageUrls.add("https://d2cdo4blch85n8.cloudfront.net/wp-content/uploads/2020/06/Sony-PlayStation-5-Officially-Announced-image-2.jpg");
-        mNames.add("PS5");
-        mImagePrices.add("$5.00");
-        mItemQuantity.add("20");
+//        mImageUrls.add("https://d2cdo4blch85n8.cloudfront.net/wp-content/uploads/2020/06/Sony-PlayStation-5-Officially-Announced-image-2.jpg");
+//        mNames.add("PS5");
+//        mImagePrices.add("$5.00");
+//        mItemQuantity.add("20");
 
         Log.d(TAG, "prices array test " + mImagePrices);
-      Log.d(TAG, "current image urlsssss" +  mImageUrls.toString() )   ;
+        Log.d(TAG, "current image urlsssss" +  mImageUrls.toString() )   ;
 
      //   adapter.notifyDataSetChanged();
 
@@ -168,7 +168,7 @@ public class Cart extends AppCompatActivity {
 //        }
 
 
-
+        initRecyclerView();
 
 
     }
