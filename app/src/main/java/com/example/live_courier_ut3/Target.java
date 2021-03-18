@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,14 +66,14 @@ public class Target extends AppCompatActivity {
 
     }
 
-    private void initImageBitmaps(String store){
+    private void initImageBitmaps(String store) {
 
         String stored = store;
 
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
 
-        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("stores/" + stored  + "/itemInfo/items");
+        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("stores/" + stored + "/itemInfo/items");
         Log.d(TAG, "initImageBitmaps:          " + stored);
         mDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -81,27 +82,27 @@ public class Target extends AppCompatActivity {
                 if (documentSnapshot.exists()) {
                     ArrayList<Map<String, String>> itemMap = new ArrayList<>();
                     itemMap = (ArrayList<Map<String, String>>) documentSnapshot.get("itemList");
-                    for(int i = 0; i < itemMap.size(); i++){
-                            HashMap<String,String> hashMap = new HashMap<String, String>();
-                            hashMap = (HashMap<String, String>) itemMap.get(i);
-                            Iterator<String> mapItr = hashMap.keySet().iterator();
-                            while(mapItr.hasNext()){
-                                String key = mapItr.next();
-                                mNames.add(key);
-                                mImageUrls.add(hashMap.get(key) );
+                    for (int i = 0; i < itemMap.size(); i++) {
+                        HashMap<String, String> hashMap = new HashMap<String, String>();
+                        hashMap = (HashMap<String, String>) itemMap.get(i);
+                        Iterator<String> mapItr = hashMap.keySet().iterator();
+                        while (mapItr.hasNext()) {
+                            String key = mapItr.next();
+                            mNames.add(key);
+                            mImageUrls.add(hashMap.get(key));
 
-                            }
-                        Log.d(TAG, "onSuccess: mNames " + mNames.toString() );
-                        Log.d(TAG, "onSuccess:  " + mImageUrls.toString() );
+                        }
+                        Log.d(TAG, "onSuccess: mNames " + mNames.toString());
+                        Log.d(TAG, "onSuccess:  " + mImageUrls.toString());
 
                     }
 
                 }
-        }
+            }
 
         });
 
-        DocumentReference mDocR = FirebaseFirestore.getInstance().document("stores/" + stored  + "/itemInfo/items");
+        DocumentReference mDocR = FirebaseFirestore.getInstance().document("stores/" + stored + "/itemInfo/items");
         Log.d(TAG, "initImageBitmaps:          " + stored);
         mDocR.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -111,15 +112,15 @@ public class Target extends AppCompatActivity {
                     ArrayList<String> transfer = (ArrayList<String>) documentSnapshot.get("prices");
                     assert transfer != null;
                     mImagePrices.addAll(transfer);
-                    Log.d(TAG, "prices " +  transfer.toString());
-
-                    }
+                    Log.d(TAG, "prices " + transfer.toString());
 
                 }
-            });
+
+            }
+        });
 
 
-        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("stores/" + stored  + "/itemInfo/items");
+        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("stores/" + stored + "/itemInfo/items");
         Log.d(TAG, "initImageBitmaps:          " + stored);
         mDocRe.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -129,7 +130,7 @@ public class Target extends AppCompatActivity {
                     ArrayList<String> trans = (ArrayList<String>) documentSnapshot.get("itemNumber");
                     assert trans != null;
                     mItemQuantity.addAll(trans);
-                    Log.d(TAG, "number of items " +  trans.toString());
+                    Log.d(TAG, "number of items " + trans.toString());
 
 
                 }
@@ -143,9 +144,15 @@ public class Target extends AppCompatActivity {
 //        mItemQuantity.add("This is a placeholder item to initialize the list");
 //        mImagePrices.add("-");
 
+        Handler h = new Handler();
+
+        h.postDelayed(new Runnable() {
+            public void run() {
+                initRecyclerView();
+            }
+        }, 1000);
 
 
-        initRecyclerView();
 
 
     }
@@ -215,4 +222,4 @@ public class Target extends AppCompatActivity {
     }
 
 
-}
+ }

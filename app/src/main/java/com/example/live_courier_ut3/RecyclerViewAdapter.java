@@ -122,7 +122,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 
-                        //this refence for grabbing things from the cart in firestore
+                        //this refence for grabbing things from the cart in firestore and putting in more info to the end of the list in the cart
                         mCartRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {

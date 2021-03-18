@@ -78,7 +78,12 @@ public class Cart extends AppCompatActivity {
 
 
         DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
+        DocumentReference mDocR = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
+        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
    //     Log.d(TAG, "initImageBitmaps:          " + stored);
+
+
+
         mDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -102,51 +107,66 @@ public class Cart extends AppCompatActivity {
 
 
                 }
-               //     getUrl.addUrl(mImageUrls);
-                 //   Log.d(TAG, "class working?" + getUrl.getImageUrls().toString());
+
+                // Log.d(TAG, "initImageBitmaps:          " + stored);
+                mDocR.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            ArrayList<String> transfer = (ArrayList<String>) documentSnapshot.get("prices");
+                            assert transfer != null;
+                            mImagePrices.addAll(transfer);
+
+                            // Log.d(TAG, "prices " +  transfer.toString());
+                            //  Log.d(TAG, "image urls inside getting prices" + transfer.toString());
+                        }
+
+
+
+                        //     Log.d(TAG, "initImageBitmaps:          " + stored);
+                        mDocRe.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.N)
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.exists()) {
+                                    ArrayList<String> trans = (ArrayList<String>) documentSnapshot.get("itemNumber");
+                                    assert trans != null;
+                                    mItemQuantity.addAll(trans);
+                                    Log.d(TAG, "number of items " +  trans.toString());
+                                    Log.d(TAG, "prices array test " + mImagePrices);
+                                    Log.d(TAG, "current image urlsssss" +  mImageUrls.toString() )   ;
+                                    Log.d(TAG, "onSuccess: mNames " + mNames.toString() );
+
+                                    initRecyclerView();
+
+                                }
+
+                            }
+                        });
+
+
+
+
+                    }
+                });
+
+
+
+
             }
 
         });
 
 
 
-        DocumentReference mDocR = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
-       // Log.d(TAG, "initImageBitmaps:          " + stored);
-        mDocR.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    ArrayList<String> transfer = (ArrayList<String>) documentSnapshot.get("prices");
-                    assert transfer != null;
-                    mImagePrices.addAll(transfer);
-                   // Log.d(TAG, "prices " +  transfer.toString());
-                  //  Log.d(TAG, "image urls inside getting prices" + transfer.toString());
-                }
 
-            }
-        });
+
 
 // TODO: 3/11/2021  this needs to have a DocumentReference to the user cart with the number of Items that are intended to be ordered. 
         
         
-        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
-   //     Log.d(TAG, "initImageBitmaps:          " + stored);
-        mDocRe.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    ArrayList<String> trans = (ArrayList<String>) documentSnapshot.get("itemNumber");
-                    assert trans != null;
-                    mItemQuantity.addAll(trans);
-                    Log.d(TAG, "number of items " +  trans.toString());
 
-
-                }
-
-            }
-        });
 
 
 
@@ -156,19 +176,15 @@ public class Cart extends AppCompatActivity {
 //        mImagePrices.add("$5.00");
 //        mItemQuantity.add("20");
 
-        Log.d(TAG, "prices array test " + mImagePrices);
-        Log.d(TAG, "current image urlsssss" +  mImageUrls.toString() )   ;
-
-     //   adapter.notifyDataSetChanged();
-
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
 
-        initRecyclerView();
+
+
+
+
+
+
+
 
 
     }
@@ -178,14 +194,16 @@ public class Cart extends AppCompatActivity {
         RecyclerView recyclerView = new RecyclerView(this);
        recyclerView = findViewById(R.id.cart_recycler_view);
        // recyclerView.getPreserveFocusAfterLayout();
-        CartRecyclerViewAdapter adapter = new CartRecyclerViewAdapter(this, mNames, mImageUrls,mImagePrices, mItemQuantity);
+         adapter = new CartRecyclerViewAdapter(this, mNames, mImageUrls,mImagePrices, mItemQuantity);
 
-        adapter.setHasStableIds(true);
-        adapter.notifyDataSetChanged();
-        recyclerView.refreshDrawableState();
+      //  adapter.setHasStableIds(true);
+      //  adapter.notifyDataSetChanged();
+   //     recyclerView.refreshDrawableState();
      //   recyclerView.invalidate();
-        recyclerView.setAdapter(adapter);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
 
 
        // recyclerView.setHasFixedSize(false);
