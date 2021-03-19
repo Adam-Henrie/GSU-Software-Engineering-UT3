@@ -49,6 +49,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
         private ArrayList<String> mImagePrices = new ArrayList<>();
         private ArrayList<String> mItemQuantity = new ArrayList<>();
         private String mStoreName;
+        private String itemName;
+        private String positionLookup;
 
 
         public RecyclerViewAdapter(Context context, ArrayList<String> imageNames, ArrayList<String> images, ArrayList<String> imagePrices, ArrayList<String> itemQuantity, String store ) {
@@ -81,23 +83,27 @@ import de.hdodenhof.circleimageview.CircleImageView;
             holder.imagePrice.setText(mImagePrices.get(position));
             holder.itemQuantity.setText(mItemQuantity.get(position));
 
+
+            //longClick code
             holder.parentLayout.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     String storeLookup = "store";
                     String itemLookup = "itemLookup";
-                    String itemName = mImageNames.get(position);
+                    positionLookup = "positionLookup";
+                    itemName = mImageNames.get(position);
                     Toast.makeText(mContext, mImageNames.get(position) + " long click detected", Toast.LENGTH_SHORT).show();
                     //returning true means that the short click will not be run
                     Intent toItemPage = new Intent(mContext, ItemPage.class);
                     toItemPage.putExtra(storeLookup, mStoreName);
                     toItemPage.putExtra(itemLookup, itemName);
+                    toItemPage.putExtra(positionLookup, position);
                     mContext.startActivity(toItemPage);
                     return true;
                 }
             });
 
-            //this is a short click event
+            //this is a short click event code
             holder.parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

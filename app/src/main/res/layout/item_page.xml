@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/itemImageDetails"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="141dp"
+        android:layout_height="128dp"
 
 
         android:layout_marginStart="16dp"
@@ -21,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/itemDetailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -33,10 +34,47 @@ firestore. "
         app:layout_constraintTop_toBottomOf="@+id/itemImageDetails" />
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="150dp"
-        android:layout_height="77dp"
-        tools:layout_editor_absoluteX="229dp"
-        tools:layout_editor_absoluteY="19dp" />
+        android:id="@+id/number_of_items"
+        android:layout_width="83dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="16dp"
+        android:text="Number Left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemDetailText" />
+
+    <TextView
+        android:id="@+id/insert_number"
+        android:layout_width="66dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="insert_number"
+        app:layout_constraintStart_toEndOf="@+id/number_of_items"
+        app:layout_constraintTop_toBottomOf="@+id/itemDetailText" />
+
+    <TextView
+        android:id="@+id/price_of_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:text="Price of Item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_of_items" />
+
+    <TextView
+        android:id="@+id/insert_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:text="insert_price"
+        app:layout_constraintStart_toEndOf="@+id/price_of_item"
+        app:layout_constraintTop_toBottomOf="@+id/insert_number" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

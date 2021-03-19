@@ -5,14 +5,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     tools:context=".Cart">
+
+
+    <TextView
+        android:id="@+id/cart_page_header"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="0dp"
+        android:text='This is the cart. Here is a list of items that you have selected for purchase. Click "Pay Now" to pay.' />
 
     <androidx.recyclerview.widget.RecyclerView
 
+
+
+
         android:id="@+id/cart_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/pay_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Pay Now" />
+
+    <TextView
+        android:id="@+id/insert_cart_order_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_marginTop="45dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/cart_order_total"
+        android:inputType="numberDecimal"
+        android:text="Order total for cart" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cart_order_total"
+        android:text="Cart Order Total"
+        android:layout_toRightOf="@id/pay_button"
+        android:layout_marginTop="45dp"
+        />
+
+
+
+
 
 </RelativeLayout>

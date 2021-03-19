@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.icu.math.BigDecimal;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.nfc.Tag;
@@ -15,6 +16,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -30,6 +35,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
+import java.math.BigInteger;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,12 +57,15 @@ public class Cart extends AppCompatActivity {
     private ArrayList<String> mNames = new ArrayList<>();
     public static final ArrayList<String> mImageUrls = new ArrayList<>();
 
-  //  public GetUrls getUrl;
+
     public ArrayList<String> mImagePrices = new ArrayList<>();
     private ArrayList<String> mItemQuantity = new ArrayList<>();
     public String storeLookup = "store";
-    // public String store;
+    public Button payNow;
+    private TextView orderTotal;
     public CartRecyclerViewAdapter adapter;
+    Double priceTotal = 0.00;
+    private String total = "total";
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
@@ -70,7 +81,28 @@ public class Cart extends AppCompatActivity {
 
         initImageBitmaps();
 
+
+        payNow = findViewById(R.id.pay_button);
+
+        //this is the class that will handle the launch to the payment page activity.
+
+        payNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String storeLookup = "store";
+                Intent payPage = new Intent(v.getContext(), PaymentPage.class);
+                payPage.putExtra(storeLookup, "Target");
+                //casting to a string so that it will pass through the putExtra function. I will recast it to double if need be from within PaymentPage.java
+                payPage.putExtra("total", Double.toString(priceTotal));
+                startActivity(payPage);
+
+            }
+        });
+
+
     }
+
+
 
     private void initImageBitmaps(){
      //   String stored = store;
@@ -137,7 +169,19 @@ public class Cart extends AppCompatActivity {
                                     Log.d(TAG, "prices array test " + mImagePrices);
                                     Log.d(TAG, "current image urlsssss" +  mImageUrls.toString() )   ;
                                     Log.d(TAG, "onSuccess: mNames " + mNames.toString() );
+                                    orderTotal = findViewById(R.id.insert_cart_order_total);
 
+                                //    NumberFormat nf = NumberFormat.getCurrencyInstance();
+
+                                    for(int i = 0; i < mImagePrices.size(); i++){
+                                        priceTotal = priceTotal +  Double.parseDouble(mImagePrices.get(i));
+
+                                    }
+
+                                    orderTotal.setText(Double.toString(priceTotal));
+
+
+ //recyclerView call here --------->
                                     initRecyclerView();
 
                                 }
