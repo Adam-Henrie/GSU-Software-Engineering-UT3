@@ -109,9 +109,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
                 public void onClick(View view) {
                     Log.d(TAG, "onClick: clicked on: " + mImageNames.get(position));
 
+
+                    //Adam Henrie changed
                     DocumentReference mCartRef = FirebaseFirestore.getInstance().document(
                             "users/" +
-                                     "Adam Henrie" +
+                                    FirebaseAuth.getInstance().getCurrentUser().getDisplayName()    +
                                     "/storeCart/" +
                                     mStoreName +
                                     "Cart"

@@ -19,9 +19,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +93,65 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 //creating document reference because of successful login to add data to the firestore database
 
                 DocumentReference userInfo = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName());
+
+                //For every new store added we need to initialize the cart for each store in LoginRegisterActivity at user first sign in.
+                //after re-sign in the cart empties
+                //initialization of all Firestore Documents relating to this user. By making a document reference to each field.
+                DocumentReference userCartTar = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/TargetCart");
+                DocumentReference userCartWal = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/WalmartCart");
+                DocumentReference userCartTac = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/TacoBellCart");
+                DocumentReference userFunds = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/userFunds/funds");
+
+
+                //Empty maps to set the cart.
+                Map<String,Object> itemList = new HashMap<>();
+                List<Map<String,String>> itemListInsert = Collections.emptyList() ;
+                List<String> itemNumberInsert = Collections.emptyList() ;
+                List<String> pricesInsert = Collections.emptyList();
+
+                itemList.put("itemList", itemListInsert);
+                itemList.put("itemNumber", itemNumberInsert);
+                itemList.put("prices", pricesInsert);
+
+
+                //Target Cart initialization
+                userCartTar.update(itemList);
+                userCartTar.set(itemList);
+
+                //Walmart Cart initialization
+                userCartWal.update(itemList);
+                userCartWal.set(itemList);
+
+
+                //Taco Bell Cart Initialization
+                userCartTac.update(itemList);
+                userCartTac.set(itemList);
+
+
+
+                String number = "200.00";
+                Map<String, Object> funds = new HashMap();
+                funds.put("fundsLeft", number );
+
+                userFunds.update(funds).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "funds added to user account "+ number);
+                    }
+                });
+                userFunds.set(funds);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                 String email = user.getEmail().toString();

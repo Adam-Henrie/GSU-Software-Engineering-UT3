@@ -240,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         walmart = findViewById(R.id.walmart);
 
-
         taco_bell = findViewById(R.id.taco_bell);
 
         target.setOnClickListener(new View.OnClickListener() {
@@ -426,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                        locations.update(geoLoc).addOnSuccessListener(new OnSuccessListener<Void>() {
                            @Override
                            public void onSuccess(Void aVoid) {
-                               Log.d("InspiringQuote", "Document has been saved!");
+                               Log.d("User Location", "Location has been saved!");
                            }
                        }).addOnFailureListener(new OnFailureListener() {
                            @Override

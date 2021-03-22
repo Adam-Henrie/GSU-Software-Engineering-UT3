@@ -3,6 +3,8 @@ package com.example.live_courier_ut3;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,8 +29,9 @@ public class PaymentPage extends AppCompatActivity {
     TextView orderTotal;
     TextView fundsLeft;
     String funds;
-
-
+    Button addFunds;
+    Button addFundsReal;
+    String fundsKey = "funds";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.payment_page);
@@ -41,13 +44,22 @@ public class PaymentPage extends AppCompatActivity {
 
         orderTotal = findViewById(R.id.insert_order_total);
         fundsLeft = findViewById(R.id.insert_funds_left);
+        addFunds = findViewById(R.id.button_add_funds);
+        addFundsReal = findViewById(R.id.button_add_funds_real);
+
+
+
+
+
+
 
     //    Double storeDoubleTotal = Double.parseDouble(storeTotal);
     //    orderTotal.setText(Double.toString(storeDoubleTotal));
             orderTotal.setText(storeTotal);
      //   DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser() + "/userFunds/funds");
 
-        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/userFunds/funds");
+        //Adam Henrie changed
+        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/userFunds/funds");
 
         mDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -62,7 +74,31 @@ public class PaymentPage extends AppCompatActivity {
             }
         });
 
+// I intend to set this within an if statement that will re-run the fetch for the funds available to make sure to
+        //re-display it on the payment page. 
+
+        addFunds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), FundsPage.class);
+                intent.putExtra("funds", funds );
+                startActivity(intent);
+
+                // setContentView(R.layout.add_funds_page);
+            }
+        });
+
+
+
+
+
 
 
     }
+
+
+
+
+
+
 }

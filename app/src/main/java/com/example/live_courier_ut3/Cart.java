@@ -108,10 +108,10 @@ public class Cart extends AppCompatActivity {
      //   String stored = store;
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
-
-        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
-        DocumentReference mDocR = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
-        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("users/" + "Adam Henrie" + "/storeCart"  + "/TargetCart");
+//Adam Henrie changed
+        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/storeCart"  + "/TargetCart");
+        DocumentReference mDocR = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/storeCart"  + "/TargetCart");
+        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/storeCart"  + "/TargetCart");
    //     Log.d(TAG, "initImageBitmaps:          " + stored);
 
 
