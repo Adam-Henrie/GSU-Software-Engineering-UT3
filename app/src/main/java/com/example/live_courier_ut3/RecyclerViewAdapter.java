@@ -94,6 +94,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
                     itemName = mImageNames.get(position);
                     Toast.makeText(mContext, mImageNames.get(position) + " long click detected", Toast.LENGTH_SHORT).show();
                     //returning true means that the short click will not be run
+
                     Intent toItemPage = new Intent(mContext, ItemPage.class);
                     toItemPage.putExtra(storeLookup, mStoreName);
                     toItemPage.putExtra(itemLookup, itemName);

@@ -37,7 +37,11 @@ import java.util.Set;
 public class Target extends AppCompatActivity {
 
 
-    private static final String TAG = "TargetActivity";
+
+
+    //Target.class refers to the class that handles the scroll view of the items in ANY STORE.
+
+    private static final String TAG = "StoreItemsViewActivity";
     LocationManager locationManager;
     LocationListener locationListener;
 
@@ -201,9 +205,9 @@ public class Target extends AppCompatActivity {
             case R.id.cart:
 
                 Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
-                String storeLookup = "store";
-                Intent toCart = new Intent(this, Cart.class);
-                toCart.putExtra(storeLookup, "Target");
+             //   String storeLookup = "store";
+                Intent toCart = new Intent(this, CartSelection.class);
+               // toCart.putExtra(storeLookup, "Target");
                 startActivity(toCart);
                 return true;
 

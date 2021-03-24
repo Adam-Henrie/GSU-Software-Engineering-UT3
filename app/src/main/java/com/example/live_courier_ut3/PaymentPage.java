@@ -7,13 +7,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,8 +77,37 @@ public class PaymentPage extends AppCompatActivity {
             }
         });
 
-// I intend to set this within an if statement that will re-run the fetch for the funds available to make sure to
+
+
+         DocumentReference docRef = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/userFunds/funds");
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+
+
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+                    fundsLeft.setText(snapshot.getString("fundsLeft"));
+
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
+
+
+
+
+
+        // I intend to set this within an if statement that will re-run the fetch for the funds available to make sure to
         //re-display it on the payment page. 
+
 
         addFunds.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +115,6 @@ public class PaymentPage extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), FundsPage.class);
                 intent.putExtra("funds", funds );
                 startActivity(intent);
-
                 // setContentView(R.layout.add_funds_page);
             }
         });

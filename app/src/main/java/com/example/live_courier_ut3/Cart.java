@@ -79,7 +79,7 @@ public class Cart extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + store);
 
 
-        initImageBitmaps();
+        initImageBitmaps(store);
 
 
         payNow = findViewById(R.id.pay_button);
@@ -104,15 +104,15 @@ public class Cart extends AppCompatActivity {
 
 
 
-    private void initImageBitmaps(){
-     //   String stored = store;
+    private void initImageBitmaps(String store){
+        String stored = store;
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
 //Adam Henrie changed
-        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/storeCart"  + "/TargetCart");
-        DocumentReference mDocR = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/storeCart"  + "/TargetCart");
-        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/storeCart"  + "/TargetCart");
-   //     Log.d(TAG, "initImageBitmaps:          " + stored);
+        DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/storeCart"  + "/" + stored + "Cart");
+        DocumentReference mDocR = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/storeCart"  + "/" + stored + "Cart");
+        DocumentReference mDocRe = FirebaseFirestore.getInstance().document("users/" + FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "/storeCart"  + "/" + stored + "Cart");
+        Log.d(TAG, "initImageBitmaps:          " + stored);
 
 
 
@@ -257,7 +257,7 @@ public class Cart extends AppCompatActivity {
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_target, menu);
         return true;
     }
 
@@ -280,15 +280,15 @@ public class Cart extends AppCompatActivity {
                         });
                 return true;
 
-            case R.id.cart:
-            Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
-            String storeLookup = "store";
-            Intent toCart = new Intent(this.getApplicationContext(), Cart.class);
-            toCart.putExtra(storeLookup, "Target");
-            startActivity(toCart);
-
-
-            return true;
+//            case R.id.cart:
+//            Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
+//            String storeLookup = "store";
+//            Intent toCart = new Intent(this.getApplicationContext(), Cart.class);
+//            toCart.putExtra(storeLookup, "Target");
+//            startActivity(toCart);
+//
+//
+//            return true;
 
             default:
                 return super.onOptionsItemSelected(item);

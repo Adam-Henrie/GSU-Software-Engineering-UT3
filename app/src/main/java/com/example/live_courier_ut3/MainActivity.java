@@ -83,25 +83,29 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 
-    //declari6547ng and setting map variable before on create inside the onMapReady lifecycle method
+    //declaring and setting map variable before on create inside the onMapReady lifecycle method
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
         //this is my house
-        LatLng latLng = new LatLng(34.140980, -84.357679);
-        LatLng walmart = new LatLng(34.149409, -84.249323);
-        WAL_MARKER.title("Walmart, Milton");
-
 
         //markerOptions here is referring to my home
-        // TODO: 2/26/2021 change this to my home so that I don't get confused.
+        LatLng latLng = new LatLng(34.140980, -84.357679);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.title("My home");
-        //LatLng latLng;
-        WAL_MARKER.position(walmart);
         markerOptions.position(latLng);
+
+
+        LatLng walmart = new LatLng(34.149409, -84.249323);
+        WAL_MARKER.title("Walmart, Milton");
+        WAL_MARKER.position(walmart);
+
+
+        // TODO: 2/26/2021 change this to my home so that I don't get confused.
+
         googleMap.addMarker(markerOptions);
         googleMap.addMarker(WAL_MARKER);
+        //beginning map zoom level for this latlng you pass to it
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
         googleMap.animateCamera(cameraUpdate);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
@@ -246,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 String storeLookup = "store";
+                //Target.class refers to the class that handles the scroll view of the items in ANY STORE.
                 Intent toTarget = new Intent(v.getContext(), Target.class);
                 toTarget.putExtra(storeLookup, "Target");
                 startActivity(toTarget);
@@ -382,10 +387,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        LocationServices.getFusedLocationProviderClient(this).setMockLocation(mockLocation);
 
         // geoPoint for this return statement under
+        //This should never run. If it does, something went wrong. ---------------------------------------------------------------------->
         GeoPoint placateGeo = new GeoPoint(23.232323,23.232323);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return placateGeo;
         }
+       // ------------------------------------------------------------------------------------------------------------------------------------------->
+
         mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<android.location.Location>() {
             @Override
             public void onComplete(@NonNull Task<android.location.Location> task) {
@@ -396,6 +404,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Log.d(TAG, "onComplete: longitude: " + geoPoint.getLongitude());
 
                     //Manual insertion commented out. Used for testing
+                    //Adam's House you should swat him
                     //LatLng latLng = new LatLng(34.140980, -84.357679);
                    //  userPosition = new MarkerOptions();
 
@@ -435,6 +444,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                        });
 
                        //inserting current user location and running from within getLastKnownLocation
+                      // ".......".set(....) finalizes the setting of the data into firestore
                        locations.set(geoLoc);
                        //---------------------------------------------------------------------------->
                    } catch (NullPointerException e){
@@ -446,6 +456,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        //no functions use this return value it is just here to placate the getLastKnownLocation function
         return geoStart;
     }
 
@@ -560,9 +571,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.cart:
 
              Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
-                        String storeLookup = "store";
-                        Intent toCart = new Intent(this, Cart.class);
-                        toCart.putExtra(storeLookup, "Target");
+                      //  String storeLookup = "store";
+                        Intent toCart = new Intent(this, CartSelection.class);
+                       // toCart.putExtra(storeLookup, "Target");
                         startActivity(toCart);
 
 
@@ -570,11 +581,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             default:
                 return super.onOptionsItemSelected(item);
+
+
+               //Intent to go to AddFunds page goes here as another case in the switch statement
+
+
+
         }
 
 
     }
-
 
 
 

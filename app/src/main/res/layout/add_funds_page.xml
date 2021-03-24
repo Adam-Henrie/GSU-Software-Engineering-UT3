@@ -15,7 +15,7 @@
         android:layout_marginRight="36dp"
         android:text="Add Funds"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.79"
+        app:layout_constraintHorizontal_bias="0.797"
         app:layout_constraintStart_toEndOf="@+id/add_funds_here"
         app:layout_constraintTop_toBottomOf="@+id/tv_set_add_funds" />
 

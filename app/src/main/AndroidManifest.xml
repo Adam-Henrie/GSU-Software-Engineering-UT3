@@ -60,6 +60,12 @@
 
         </activity>
 
+        <activity android:name=".CartSelection">
+
+        </activity>
+
+
+
     </application>
 
 </manifest>

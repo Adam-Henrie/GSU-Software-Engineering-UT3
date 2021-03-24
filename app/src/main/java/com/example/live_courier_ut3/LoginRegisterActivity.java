@@ -99,12 +99,14 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 //initialization of all Firestore Documents relating to this user. By making a document reference to each field.
                 DocumentReference userCartTar = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/TargetCart");
                 DocumentReference userCartWal = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/WalmartCart");
-                DocumentReference userCartTac = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/TacoBellCart");
+                DocumentReference userCartTac = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/Taco BellCart");
                 DocumentReference userFunds = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/userFunds/funds");
 
 
                 //Empty maps to set the cart.
                 Map<String,Object> itemList = new HashMap<>();
+
+
                 List<Map<String,String>> itemListInsert = Collections.emptyList() ;
                 List<String> itemNumberInsert = Collections.emptyList() ;
                 List<String> pricesInsert = Collections.emptyList();
