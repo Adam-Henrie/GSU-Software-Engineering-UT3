@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class Target extends AppCompatActivity {
+public class StoreItems extends AppCompatActivity {
 
 
 

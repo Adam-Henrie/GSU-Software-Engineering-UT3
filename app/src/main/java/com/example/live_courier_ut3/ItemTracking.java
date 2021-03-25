@@ -131,7 +131,7 @@ public class ItemTracking extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.item_tracking);
 
         mapView = findViewById(R.id.mapView);
 

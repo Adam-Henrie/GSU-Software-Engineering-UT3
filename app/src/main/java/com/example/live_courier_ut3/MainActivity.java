@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +26,8 @@ import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -56,9 +53,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.maps.DirectionsApiRequest;
@@ -246,12 +241,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         taco_bell = findViewById(R.id.taco_bell);
 
+
         target.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String storeLookup = "store";
                 //Target.class refers to the class that handles the scroll view of the items in ANY STORE.
-                Intent toTarget = new Intent(v.getContext(), Target.class);
+                Intent toTarget = new Intent(v.getContext(), StoreItems.class);
                 toTarget.putExtra(storeLookup, "Target");
                 startActivity(toTarget);
 
@@ -261,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v){
                 String storeLookup = "store";
-                Intent toWalmart = new Intent(v.getContext(), Target.class);
+                Intent toWalmart = new Intent(v.getContext(), StoreItems.class);
                 getIntent().putExtra(storeLookup,"Walmart");
 
                 startActivity(toWalmart);
@@ -271,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v){
                 String storeLookup = "store";
-                Intent toTaco_bell = new Intent(v.getContext(), Target.class);
+                Intent toTaco_bell = new Intent(v.getContext(), StoreItems.class);
                 toTaco_bell.putExtra(storeLookup, "Taco Bell");
                // getIntent().putExtra(storeLookup, "Taco Bell");
                 startActivity(toTaco_bell);
@@ -306,6 +302,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 DocumentReference directionsRef = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName().toString());
 
                 //calling directions request from within grab of location data
+
+
 
                 directionsRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -538,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //target activity
     public void toTargetActivity() {
-        Intent intent = new Intent(this, Target.class);
+        Intent intent = new Intent(this, StoreItems.class);
         startActivity(intent);
         this.finish();
     }
@@ -578,6 +576,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                 return true;
+
+
+            case R.id.driver_details:
+                Toast.makeText(this, "Driver Details",Toast.LENGTH_SHORT).show();
+                Intent toDriverDetails = new Intent(this, DriverDetails.class);
+                startActivity(toDriverDetails);
+
+
 
             default:
                 return super.onOptionsItemSelected(item);
