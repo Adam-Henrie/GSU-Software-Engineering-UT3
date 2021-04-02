@@ -33,7 +33,8 @@ public class PaymentPage extends AppCompatActivity {
     TextView fundsLeft;
     String funds;
     Button addFunds;
-    Button addFundsReal;
+    Button agreeAndPay;
+
     String fundsKey = "funds";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,7 @@ public class PaymentPage extends AppCompatActivity {
         orderTotal = findViewById(R.id.insert_order_total);
         fundsLeft = findViewById(R.id.insert_funds_left);
         addFunds = findViewById(R.id.button_add_funds);
-        addFundsReal = findViewById(R.id.button_add_funds_real);
+        agreeAndPay = findViewById(R.id.agree_and_pay);
 
 
 
@@ -119,6 +120,16 @@ public class PaymentPage extends AppCompatActivity {
             }
         });
 
+
+        agreeAndPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ItemTracking.class);
+                //need to send the store location to the item tracking page to start the tracking bard on the item tracking page.
+                intent.putExtra("store", store);
+                startActivity(intent);
+            }
+        });
 
 
 

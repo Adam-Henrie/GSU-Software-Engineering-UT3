@@ -7,12 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PersistableBundle;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
@@ -179,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public static final MarkerOptions WAL_MARKER = new MarkerOptions();
 
+
+    LocationManager locationManager;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -358,7 +362,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
-// marker spoof location method
+// marker spoof location method------------------------------------------------------------------------------------------>
 //        LatLng startPos = new LatLng(34.140980,-84.357679);
 //        Location mockLocation = new Location(LocationManager.GPS_PROVIDER); // a string
 //
@@ -379,10 +383,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //            //                                          int[] grantResults)
 //            // to handle the case where the user grants the permission. See the documentation
 //            // for ActivityCompat#requestPermissions for more details.
-//            return;
+//            GeoPoint placateReturnGeo = new GeoPoint(23.232323,23.232323);
+//            return placateReturnGeo;
 //        }
 //        LocationServices.getFusedLocationProviderClient(this).setMockMode(true);
-//        LocationServices.getFusedLocationProviderClient(this).setMockLocation(mockLocation);
+//        LocationServices.getFusedLocationProviderClient(this).setMockLocation(mockLocation).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Log.d("Main location thread:", "Setting location through mock location worked?");
+//            }
+//        });
+
+
+//end marker geoPoint spoof method------------------------------------------------------------------------------------->
+
+
 
         // geoPoint for this return statement under
         //This should never run. If it does, something went wrong. ---------------------------------------------------------------------->
@@ -391,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return placateGeo;
         }
        // ------------------------------------------------------------------------------------------------------------------------------------------->
+
 
         mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<android.location.Location>() {
             @Override
@@ -403,13 +419,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     //Manual insertion commented out. Used for testing
                     //Adam's House you should swat him
-                    //LatLng latLng = new LatLng(34.140980, -84.357679);
+                    LatLng latLng = new LatLng(34.140980, -84.357679);
                    //  userPosition = new MarkerOptions();
 
                     //this latLng should be from current user realtime position
-                    LatLng latLng = new LatLng(geoPoint.getLatitude(),geoPoint.getLongitude());
+                  //  LatLng latLng = new LatLng(geoPoint.getLatitude(),geoPoint.getLongitude());
 
-                    userPosition.position(latLng);
+                 //   userPosition.position(latLng);
                     geoStart = new GeoPoint(latLng.latitude,latLng.longitude);
                     Log.d("geoStart", geoStart.toString());
                   //  geoStart = new GeoPoint(userPosition.getPosition().latitude,userPosition.getPosition().longitude);

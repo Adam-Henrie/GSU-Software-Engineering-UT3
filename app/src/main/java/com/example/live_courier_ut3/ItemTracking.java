@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,10 +16,12 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -25,6 +29,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,8 +39,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
@@ -53,9 +64,13 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class ItemTracking extends AppCompatActivity {
+public class ItemTracking extends AppCompatActivity implements OnMapReadyCallback {
 
 
     private static final String TAG = "ItemTracking" ;
@@ -75,13 +90,28 @@ public class ItemTracking extends AppCompatActivity {
         WAL_MARKER.title("Walmart, Milton");
         WAL_MARKER.position(walmart);
 
-        //markerOptions here is referring to my home
+
+        LatLng latTarget = new LatLng(34.098322, -84.269331);
+        MarkerOptions markerTarget = new MarkerOptions();
+        markerTarget.title("Target, Milton");
+        markerTarget.position(latTarget);
+
+
+        LatLng latTaco = new LatLng(34.072233, -84.295421);
+        MarkerOptions markerTaco = new MarkerOptions();
+        markerTaco.title("Taco Bell, Alpharetta");
+        markerTaco.position(latTaco);
+
+
         // TODO: 2/26/2021 change this to my home so that I don't get confused.
 
 
-
+        //markerOptions here is referring to my home
         googleMap.addMarker(markerOptions);
         googleMap.addMarker(WAL_MARKER);
+        googleMap.addMarker(markerTarget);
+        googleMap.addMarker(markerTaco);
+
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
         googleMap.animateCamera(cameraUpdate);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
@@ -128,12 +158,25 @@ public class ItemTracking extends AppCompatActivity {
 
     public static final MarkerOptions WAL_MARKER = new MarkerOptions();
 
+    ProgressBar progressBar;
+    int maxProgressBarTime;
 
+    FirebaseUser user;
+    GeoPoint curLoc;
+    GeoPoint startingPoint;
+    String store;
+    MarkerOptions directionsMarker = new MarkerOptions();
+    //count for the timer for the progress bar
+    int count = 0;
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_tracking);
-
-        mapView = findViewById(R.id.mapView);
+        Intent intent = getIntent();
+        store = intent.getStringExtra("store");
+        Log.d("name of store passed", store);
+        mapView = findViewById(R.id.map_route_to_house);
 
 
 
@@ -153,6 +196,103 @@ public class ItemTracking extends AppCompatActivity {
 
 
 
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+
+
+            //CALL GET LAST KNOWN LOCATION ONLY IF YOU ARE NOT USING THE EMULATOR GIVEN GPS POSITION
+            getLastKnownLocation();
+
+
+            //     Log.d(TAG, "Null object? : " + test.getLatitude() + " " + test.getLongitude());
+            //walmart starting point 34.149409, -84.249323
+           // LatLng start = new LatLng(34.149409, -84.249323);
+
+
+
+            DocumentReference mStoreLocationRef = FirebaseFirestore.getInstance().document("stores/" + store);
+            mStoreLocationRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                   startingPoint =  documentSnapshot.getGeoPoint("location");
+                    LatLng startingLatLng = new LatLng(startingPoint.getLatitude(),startingPoint.getLongitude());
+
+                    directionsMarker.position(startingLatLng);
+                }
+            });
+
+
+            user = FirebaseAuth.getInstance().getCurrentUser();
+
+            DocumentReference directionsRef = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName().toString());
+
+            //calling directions request from within grab of location data
+
+
+            directionsRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        curLoc = documentSnapshot.getGeoPoint("location") ;
+                        Log.d(TAG, "checking to see if location grabbed from firestore " + curLoc.getLongitude());
+                        calculateDirections(directionsMarker, curLoc);
+                    }
+                }
+            });
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+
+        //THIS LINE FOR OFFICIAL TIME IT WILL TAKE TO GET TO PLACE
+       // progressBar.setMax(maxProgressBarTime);
+        //THIS LINE FOR DEMO
+        progressBar.setMax(500);
+        Log.d("Checking max bar time ", Integer.toString(progressBar.getMax()));
+        int progress = 0;
+        progressBar.setProgress(progress);
+
+        Timer t = new Timer();
+
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                count = count + 1;
+                progressBar.setProgress(count);
+             //   setProgressValue(progress);
+                Log.d("Time left: ",  Integer.toString(progressBar.getProgress()));
+
+                // Do stuff
+                if (count >= progressBar.getMax()) {
+                    t.cancel();
+                }
+            }
+            }, 0, 1000);
+
+
+
+
+
+
+    }
+
+    private void setProgressValue(final int progress) {
+        // set the progress
+        progressBar.setProgress(progress + 1);
+        // thread is used to change the progress value
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
+//        thread.start();
     }
 
     private boolean checkGooglePlayServices() {
@@ -237,7 +377,8 @@ public class ItemTracking extends AppCompatActivity {
                         Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
                         Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
                         Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
-
+                        maxProgressBarTime = (int) result.routes[0].legs[0].duration.inSeconds;
+                        Log.d(TAG, "maxProgressBarTime value " + maxProgressBarTime);
 
                         addPolylinesToMap(result);
                     }
@@ -284,13 +425,6 @@ public class ItemTracking extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
-
 
 
     @Override
@@ -342,8 +476,6 @@ public class ItemTracking extends AppCompatActivity {
         mapView.onSaveInstanceState(mapViewBundle);
 
 
-
-
     }
 
     @Override
@@ -354,7 +486,130 @@ public class ItemTracking extends AppCompatActivity {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public GeoPoint getLastKnownLocation() {
+        Log.d(TAG, "getLastKnownLocation: called.");
 
+
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            Log.d(TAG, "went to firebase login");
+            Intent intent = new Intent(this,LoginRegisterActivity.class );
+            startActivity(intent);
+            this.finish();
+        }
+
+
+// marker spoof location method------------------------------------------------------------------------------------------>
+//        LatLng startPos = new LatLng(34.140980,-84.357679);
+//        Location mockLocation = new Location(LocationManager.GPS_PROVIDER); // a string
+//
+//        mockLocation.setLatitude(startPos.latitude);  // double
+//        mockLocation.setLongitude(startPos.longitude);
+//        mockLocation.setAltitude(100);
+//        mockLocation.setTime(System.currentTimeMillis());
+//        mockLocation.setAccuracy(1);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//            mockLocation.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
+//        }
+//
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            GeoPoint placateReturnGeo = new GeoPoint(23.232323,23.232323);
+//            return placateReturnGeo;
+//        }
+//        LocationServices.getFusedLocationProviderClient(this).setMockMode(true);
+//        LocationServices.getFusedLocationProviderClient(this).setMockLocation(mockLocation).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Log.d("Main location thread:", "Setting location through mock location worked?");
+//            }
+//        });
+
+
+//end marker geoPoint spoof method------------------------------------------------------------------------------------->
+
+
+
+        // geoPoint for this return statement under
+        //This should never run. If it does, something went wrong. ---------------------------------------------------------------------->
+        GeoPoint placateGeo = new GeoPoint(23.232323,23.232323);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return placateGeo;
+        }
+        // ------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if (task.isSuccessful()) {
+                    Location location = task.getResult();
+                    GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                    Log.d(TAG, "onComplete: latitude: " + geoPoint.getLatitude());
+                    Log.d(TAG, "onComplete: longitude: " + geoPoint.getLongitude());
+
+                    //Manual insertion commented out. Used for testing
+                    //Adam's House you should swat him
+                    LatLng latLng = new LatLng(34.140980, -84.357679);
+                    //  userPosition = new MarkerOptions();
+
+                    //this latLng should be from current user realtime position
+                   //  LatLng latLng = new LatLng(geoPoint.getLatitude(),geoPoint.getLongitude());
+
+                    //   userPosition.position(latLng);
+                    geoStart = new GeoPoint(latLng.latitude,latLng.longitude);
+                    Log.d("geoStart", geoStart.toString());
+                    //  geoStart = new GeoPoint(userPosition.getPosition().latitude,userPosition.getPosition().longitude);
+                    Log.d(TAG, "Complete: latitude: current realtime position " + geoStart.getLatitude());
+                    Log.d(TAG, "Complete: longitude: current realtime position " + geoStart.getLongitude());
+
+
+                    // TODO: 2/26/2021 change this into a method and refactor
+                    //------------------------------------------------------------------------------>
+
+
+                    try {
+                        user = FirebaseAuth.getInstance().getCurrentUser();
+                        Log.d(TAG, "username is " + user.getDisplayName());
+                        DocumentReference locations = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName());
+
+                        Map<String, Object> geoLoc = new HashMap<String, Object>();
+
+                        geoLoc.put("location", geoStart );
+                        locations.update(geoLoc).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("User Location", "Location has been saved!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("InspiringQuote", "Document was not saved!", e);
+                            }
+                        });
+
+                        //inserting current user location and running from within getLastKnownLocation
+                        // ".......".set(....) finalizes the setting of the data into firestore
+                        locations.set(geoLoc);
+                        //---------------------------------------------------------------------------->
+                    } catch (NullPointerException e){
+                        Log.d(TAG, "user location code skipped");
+                    }
+
+
+                }
+            }
+        });
+
+        //no functions use this return value it is just here to placate the getLastKnownLocation function
+        return geoStart;
+    }
 
 
 

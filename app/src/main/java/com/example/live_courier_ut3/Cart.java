@@ -91,7 +91,7 @@ public class Cart extends AppCompatActivity {
             public void onClick(View v) {
                 String storeLookup = "store";
                 Intent payPage = new Intent(v.getContext(), PaymentPage.class);
-                payPage.putExtra(storeLookup, "Target");
+                payPage.putExtra(storeLookup, store);
                 //casting to a string so that it will pass through the putExtra function. I will recast it to double if need be from within PaymentPage.java
                 payPage.putExtra("total", Double.toString(priceTotal));
                 startActivity(payPage);
