@@ -18,6 +18,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.sql.Driver;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -124,7 +125,7 @@ public class PaymentPage extends AppCompatActivity {
         agreeAndPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ItemTracking.class);
+                Intent intent = new Intent(v.getContext(), DriversList.class);
                 //need to send the store location to the item tracking page to start the tracking bard on the item tracking page.
                 intent.putExtra("store", store);
                 startActivity(intent);

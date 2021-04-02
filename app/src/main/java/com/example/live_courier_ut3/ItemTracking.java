@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -169,6 +170,17 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
     //count for the timer for the progress bar
     int count = 0;
 
+    //timer variable for the progress bar. Making it global so that I can close the timer on back button pressed
+    Timer t = new Timer();
+
+    public TextView tv_count_down;
+
+    int countdown;
+
+    //variables
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,16 +260,28 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
         //THIS LINE FOR OFFICIAL TIME IT WILL TAKE TO GET TO PLACE
        // progressBar.setMax(maxProgressBarTime);
         //THIS LINE FOR DEMO
-        progressBar.setMax(500);
+        progressBar.setMax(30);
         Log.d("Checking max bar time ", Integer.toString(progressBar.getMax()));
         int progress = 0;
         progressBar.setProgress(progress);
 
-        Timer t = new Timer();
+        tv_count_down = findViewById(R.id.number_time_left);
+
+        countdown = progressBar.getMax();
 
         t.scheduleAtFixedRate(new TimerTask() {
             @Override
+            //this allows the tv_count_down.setText to run on the ui thread since it is technically running inside another non-ui Thread i.e. the timer is a different thread.
             public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv_count_down.setText(Integer.toString(countdown));
+                    }
+                });
+
+
+                countdown = countdown - 1;
                 count = count + 1;
                 progressBar.setProgress(count);
              //   setProgressValue(progress);
@@ -268,7 +292,18 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
                     t.cancel();
                 }
             }
-            }, 0, 1000);
+        }, 0, 1000);
+
+
+
+//        // This callback will only be called when MyFragment is at least Started.
+//        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+//            @Override
+//            public void handleOnBackPressed() {
+//                // Handle the back button event
+//                t.cancel();
+//            }
+//        };
 
 
 
@@ -276,6 +311,16 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
+    //end onCreate------------------------------------------------->
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Back Button is being Pressed!", Toast.LENGTH_SHORT).show();
+        t.cancel();
+        super.onBackPressed();
+    }
+
+
+
 
     private void setProgressValue(final int progress) {
         // set the progress
