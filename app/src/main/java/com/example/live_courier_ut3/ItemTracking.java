@@ -14,6 +14,8 @@ import android.os.Looper;
 import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -28,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -182,6 +185,8 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
 
     Button leaveReview;
 
+   // Button logout;
+
     //variables
 
 
@@ -326,9 +331,80 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+     //   logout = findViewById(R.id.btn_logout_done);
+
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(v.getContext(), "Logout", Toast.LENGTH_SHORT).show();
+//                AuthUI.getInstance().signOut(v.getContext())
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                if (task.isSuccessful()) {
+//                                    startLoginActivity();
+//                                } else {
+//                                    System.out.println("Failed");
+//                                }
+//                            }
+//                        });
+//            }
+//        });
+
+
+
+
 
     }
     //end onCreate------------------------------------------------->
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_target, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_logout:
+                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                AuthUI.getInstance().signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    startLoginActivity();
+                                } else {
+                                    System.out.println("Failed");
+                                }
+                            }
+                        });
+                return true;
+
+//            case R.id.cart:
+//            Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
+//            String storeLookup = "store";
+//            Intent toCart = new Intent(this.getApplicationContext(), Cart.class);
+//            toCart.putExtra(storeLookup, "Target");
+//            startActivity(toCart);
+//
+//
+//            return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    public void startLoginActivity() {
+        Intent intent = new Intent(this, LoginRegisterActivity.class);
+        startActivity(intent);
+        this.finish();
+    }
+
     @Override
     public void onBackPressed() {
 
