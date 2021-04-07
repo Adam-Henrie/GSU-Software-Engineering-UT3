@@ -10,7 +10,7 @@
         android:id="@+id/map_route_to_house"
         android:layout_width="339dp"
         android:layout_height="264dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.523"
@@ -30,13 +30,13 @@
 
     <TextView
         android:id="@+id/delivery_description"
-        android:layout_width="176dp"
-        android:layout_height="59dp"
+        android:layout_width="173dp"
+        android:layout_height="104dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="52dp"
 
-        android:text="Delivery of items will be complete once the progress bar is at its end. "
+        android:text="Delivery of items will be complete once the progress bar is at its end. Feel free to leave a review of your driver once the delivery time has passed."
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
@@ -61,6 +61,17 @@
         android:text="Number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time_left" />
+
+    <Button
+        android:id="@+id/btn_leave_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Leave a Review"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/delivery_description" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

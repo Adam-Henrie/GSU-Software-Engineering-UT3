@@ -145,6 +145,7 @@ public class DriverDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),ItemTracking.class);
+                intent.putExtra("driver", driverName);
                 intent.putExtra("store",store);
 
 

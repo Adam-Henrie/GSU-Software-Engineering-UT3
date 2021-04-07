@@ -14,6 +14,7 @@ import android.os.Looper;
 import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -177,6 +178,10 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
 
     int countdown;
 
+    String driverName;
+
+    Button leaveReview;
+
     //variables
 
 
@@ -187,6 +192,7 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.item_tracking);
         Intent intent = getIntent();
         store = intent.getStringExtra("store");
+        driverName = intent.getStringExtra("driver");
         Log.d("name of store passed", store);
         mapView = findViewById(R.id.map_route_to_house);
 
@@ -276,6 +282,7 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         tv_count_down.setText(Integer.toString(countdown));
                     }
                 });
@@ -288,8 +295,11 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
                 Log.d("Time left: ",  Integer.toString(progressBar.getProgress()));
 
                 // Do stuff
+                //once the count is greater than the max display value for the progressbar then cancel the timer
+                //also make the leave a review button visible.
                 if (count >= progressBar.getMax()) {
                     t.cancel();
+
                 }
             }
         }, 0, 1000);
@@ -305,15 +315,23 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
 //            }
 //        };
 
+        leaveReview = findViewById(R.id.btn_leave_review);
 
-
-
+        leaveReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), Reviews.class );
+                intent.putExtra("driver", driverName);
+                startActivity(intent);
+            }
+        });
 
 
     }
     //end onCreate------------------------------------------------->
     @Override
     public void onBackPressed() {
+
         Toast.makeText(this, "Back Button is being Pressed!", Toast.LENGTH_SHORT).show();
         t.cancel();
         super.onBackPressed();

@@ -76,6 +76,14 @@
 
         </activity>
 
+        <activity android:name=".Reviews">
+            
+        </activity>
+
+        <activity android:name=".SubmitReview">
+
+        </activity>
+
     </application>
 
 </manifest>
