@@ -21,6 +21,11 @@ public class FundsPage extends AppCompatActivity {
 
     Button plusTen;
     Button minusTen;
+    Button plusFive;
+    Button minusFive;
+    Button plusOne;
+    Button minusOne;
+
     TextView currentFunds;
     String fundsKey = "funds";
     String fundsLeft;
@@ -35,6 +40,11 @@ public class FundsPage extends AppCompatActivity {
 
         plusTen = findViewById(R.id.btn_plus_ten);
         minusTen = findViewById(R.id.btn_minus_ten);
+        plusFive = findViewById(R.id.btn_plus_five);
+        minusFive = findViewById(R.id.btn_minus_five);
+        plusOne = findViewById(R.id.btn_plus_one);
+        minusOne = findViewById(R.id.btn_minus_one);
+
         currentFunds = findViewById(R.id.tv_set_add_funds);
         addFunds = findViewById(R.id.button_add_funds_real);
 
@@ -60,6 +70,44 @@ public class FundsPage extends AppCompatActivity {
                 currentFunds.setText(fundsLeft);
             }
         });
+
+        plusFive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Double sub =  Double.parseDouble(fundsLeft) + 5;
+                fundsLeft = Double.toString(sub);
+                currentFunds.setText(fundsLeft);
+            }
+        });
+
+        minusFive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Double sub =  Double.parseDouble(fundsLeft) - 5;
+                fundsLeft = Double.toString(sub);
+                currentFunds.setText(fundsLeft);
+            }
+        });
+
+        plusOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Double sub =  Double.parseDouble(fundsLeft) + 1;
+                fundsLeft = Double.toString(sub);
+                currentFunds.setText(fundsLeft);
+            }
+        });
+
+        minusOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Double sub =  Double.parseDouble(fundsLeft) - 1;
+                fundsLeft = Double.toString(sub);
+                currentFunds.setText(fundsLeft);
+            }
+        });
+
+
 
 
         addFunds.setOnClickListener(new View.OnClickListener() {
