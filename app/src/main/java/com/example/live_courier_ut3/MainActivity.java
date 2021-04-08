@@ -77,55 +77,56 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallback */ {
 
 
     //declaring and setting map variable before on create inside the onMapReady lifecycle method
-    @Override
-    public void onMapReady(GoogleMap map) {
-        googleMap = map;
-        //this is my house
-
-        //markerOptions here is referring to my home
-        LatLng latLng = new LatLng(34.140980, -84.357679);
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title("My home");
-        markerOptions.position(latLng);
-
-
-        LatLng walmart = new LatLng(34.149409, -84.249323);
-        WAL_MARKER.title("Walmart, Milton");
-        WAL_MARKER.position(walmart);
-
-
-        // TODO: 2/26/2021 change this to my home so that I don't get confused.
-
-        googleMap.addMarker(markerOptions);
-        googleMap.addMarker(WAL_MARKER);
-        //beginning map zoom level for this latlng you pass to it
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
-        googleMap.animateCamera(cameraUpdate);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.getUiSettings().setCompassEnabled(true);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-
-        googleMap.setMyLocationEnabled(true);
-
-        //geo api context used to be here
-
-
-
-    }
-
+    //commented out for removal of map---------------->---------------->---------------->
+  //  @Override
+//    public void onMapReady(GoogleMap map) {
+//        googleMap = map;
+//        //this is my house
+//
+//        //markerOptions here is referring to my home
+//        LatLng latLng = new LatLng(34.140980, -84.357679);
+//        MarkerOptions markerOptions = new MarkerOptions();
+//        markerOptions.title("My home");
+//        markerOptions.position(latLng);
+//
+//
+//        LatLng walmart = new LatLng(34.149409, -84.249323);
+//        WAL_MARKER.title("Walmart, Milton");
+//        WAL_MARKER.position(walmart);
+//
+//
+//        // TODO: 2/26/2021 change this to my home so that I don't get confused.
+//
+//        googleMap.addMarker(markerOptions);
+//        googleMap.addMarker(WAL_MARKER);
+//        //beginning map zoom level for this latlng you pass to it
+//        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
+//        googleMap.animateCamera(cameraUpdate);
+//        googleMap.getUiSettings().setZoomControlsEnabled(true);
+//        googleMap.getUiSettings().setCompassEnabled(true);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//
+//        googleMap.setMyLocationEnabled(true);
+//
+//        //geo api context used to be here
+//
+//
+//
+//    }
+    //commented out for removal of map---------------->---------------->
 
 
 
@@ -201,25 +202,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             startLoginActivity();
         }
 
-
-        mapView = findViewById(R.id.mapView);
-
+//commented out for removal of map-------->
+      //  mapView = findViewById(R.id.mapView);
+//commented out for removal of map-------->
 
 
         checkPermission();
-        if (isPermissionGranted) {
-            if (checkGooglePlayServices()) {
-
-                mapView.getMapAsync(this);
-                mapView.onCreate(savedInstanceState);
-
-
-                Toast.makeText(this, "Google Play Services available", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Google play Services Not available", Toast.LENGTH_SHORT).show();
-            }
-        }
-
+        //commented out for removal of map---------------->---------------->
+//        if (isPermissionGranted) {
+//            if (checkGooglePlayServices()) {
+//
+//                mapView.getMapAsync(this);
+//                mapView.onCreate(savedInstanceState);
+//
+//
+//                Toast.makeText(this, "Google Play Services available", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(this, "Google play Services Not available", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+        //commented out for removal of map---------------->---------------->
 
 
        // mQuoteTextView = findViewById(R.id.quote_display);
@@ -227,8 +229,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
       //  EditText tv_quote = findViewById(R.id.et_quote);
        // EditText tv_author = findViewById(R.id.et_author);
 
-
-        initGoogleMap(savedInstanceState);
+        //commented out for removal of map
+      //  initGoogleMap(savedInstanceState);
+        //commented out for removal of map
 
         //if user hasn't logged in before create an intent which transfers you to the LoginRegisterActivity
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -281,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
+//diagnostic code igore------------------------------------->
 //        if(FirebaseAuth.getInstance().getCurrentUser() == null){
 //            Log.d(TAG, "went to firebase login");
 //            Intent intent = new Intent(this,LoginRegisterActivity.class );
@@ -294,32 +297,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         try{
 
-           // if(user.getDisplayName() != null) {
+
                 getLastKnownLocation();
                 //     Log.d(TAG, "Null object? : " + test.getLatitude() + " " + test.getLongitude());
                 //walmart starting point 34.149409, -84.249323
-                LatLng start = new LatLng(34.149409, -84.249323);
-                MarkerOptions directionsMarker = new MarkerOptions();
-                directionsMarker.position(start);
-                user = FirebaseAuth.getInstance().getCurrentUser();
 
-                DocumentReference directionsRef = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName().toString());
+            //commented out for removal of map---------------->---------------->---------------->
+//                LatLng start = new LatLng(34.149409, -84.249323);
+//                MarkerOptions directionsMarker = new MarkerOptions();
+//                directionsMarker.position(start);
+//                user = FirebaseAuth.getInstance().getCurrentUser();
+//
+//                DocumentReference directionsRef = FirebaseFirestore.getInstance().document("sampleData/" + user.getDisplayName().toString());
+//
+//                //calling directions request from within grab of location data
+//
+//
+//
+//                directionsRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                        if (documentSnapshot.exists()) {
+//                            curLoc = documentSnapshot.getGeoPoint("location") ;
+//                            Log.d(TAG, "checking to see if location grabbed from firestore " + curLoc.getLongitude());
+//                            calculateDirections(directionsMarker, curLoc);
+//                        }
+//                    }
+//                });
+            //commented out for removal of map---------------->---------------->---------------->
 
-                //calling directions request from within grab of location data
-
-
-
-                directionsRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            curLoc = documentSnapshot.getGeoPoint("location") ;
-                            Log.d(TAG, "checking to see if location grabbed from firestore " + curLoc.getLongitude());
-                            calculateDirections(directionsMarker, curLoc);
-                        }
-                    }
-                });
-          //  }
 
         }catch (NullPointerException e){
             Log.d(TAG, "flow of onCreate continued past initial call of loginRegisterActivity");
@@ -328,26 +334,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }   //end onCreate
 
-    private void initGoogleMap(Bundle savedInstanceState) {
-        // *** IMPORTANT ***
-        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
-        // objects or sub-Bundles.
-        Bundle mapViewBundle = null;
-        if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
-        }
 
-        mapView.onCreate(mapViewBundle);
-
-        mapView.getMapAsync(this);
-
-        if(mGeoApiContext == null){
-            mGeoApiContext = new GeoApiContext.Builder()
-                    .apiKey(getString(R.string.google_maps_api_key))
-                    .build();
-        }
-    } //end initGoogleMap
-
+    //commented out for removal of map---------------->---------------->---------------->
+//    private void initGoogleMap(Bundle savedInstanceState) {
+//        // *** IMPORTANT ***
+//        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
+//        // objects or sub-Bundles.
+//        Bundle mapViewBundle = null;
+//        if (savedInstanceState != null) {
+//            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+//        }
+//
+//        mapView.onCreate(mapViewBundle);
+//
+//        mapView.getMapAsync(this);
+//
+//        if(mGeoApiContext == null){
+//            mGeoApiContext = new GeoApiContext.Builder()
+//                    .apiKey(getString(R.string.google_maps_api_key))
+//                    .build();
+//        }
+//    } //end initGoogleMap
+    //commented out for removal of map---------------->---------------->---------------->
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public GeoPoint getLastKnownLocation() {
@@ -770,67 +778,67 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mapView.onStop();
-
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-     //   mapView.onSaveInstanceState(outState);
-
-
-
-        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
-        if (mapViewBundle == null) {
-            mapViewBundle = new Bundle();
-            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
-        }
-
-        mapView.onSaveInstanceState(mapViewBundle);
-
-
-
-
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
+//---------------->---------------->---------------->---------------->
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        mapView.onStart();
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        mapView.onResume();
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        mapView.onPause();
+//    }
+//
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        mapView.onStop();
+//
+//
+//    }
+//
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        mapView.onDestroy();
+//    }
+//
+//    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+//        super.onSaveInstanceState(outState, outPersistentState);
+//     //   mapView.onSaveInstanceState(outState);
+//
+//
+//
+//        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+//        if (mapViewBundle == null) {
+//            mapViewBundle = new Bundle();
+//            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+//        }
+//
+//        mapView.onSaveInstanceState(mapViewBundle);
+//
+//
+//
+//
+//    }
+//
+//    @Override
+//    public void onLowMemory() {
+//        super.onLowMemory();
+//        mapView.onLowMemory();
+//    }
+//---------------->---------------->---------------->---------------->
 
 
 

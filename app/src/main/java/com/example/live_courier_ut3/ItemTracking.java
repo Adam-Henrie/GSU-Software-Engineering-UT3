@@ -260,7 +260,17 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
                     if (documentSnapshot.exists()) {
                         curLoc = documentSnapshot.getGeoPoint("location") ;
                         Log.d(TAG, "checking to see if location grabbed from firestore " + curLoc.getLongitude());
-                        calculateDirections(directionsMarker, curLoc);
+
+                        // TODO: 4/7/2021 Try handler delay to see if this fixes the menu logout code from crashing the app with null object reference.
+                        Handler h = new Handler();
+
+                        h.postDelayed(new Runnable() {
+                            public void run() {
+                                calculateDirections(directionsMarker, curLoc);
+                            }
+                        }, 2000);
+
+
                     }
                 }
             });
@@ -383,15 +393,6 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
                         });
                 return true;
 
-//            case R.id.cart:
-//            Toast.makeText(this, "Cart",Toast.LENGTH_SHORT).show();
-//            String storeLookup = "store";
-//            Intent toCart = new Intent(this.getApplicationContext(), Cart.class);
-//            toCart.putExtra(storeLookup, "Target");
-//            startActivity(toCart);
-//
-//
-//            return true;
 
             default:
                 return super.onOptionsItemSelected(item);
