@@ -100,6 +100,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 DocumentReference userCartTar = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/TargetCart");
                 DocumentReference userCartWal = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/WalmartCart");
                 DocumentReference userCartTac = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/Taco BellCart");
+                DocumentReference userCartCVS = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/CVSCart");
                 DocumentReference userFunds = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/userFunds/funds");
 
 
@@ -129,7 +130,8 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 userCartTac.update(itemList);
                 userCartTac.set(itemList);
 
-
+                userCartCVS.update(itemList);
+                userCartCVS.set(itemList);
 
                 String number = "200.00";
                 Map<String, Object> funds = new HashMap();

@@ -12,7 +12,7 @@ public class CartSelection extends AppCompatActivity {
         Button toWalmart;
         Button toTarget;
         Button toTacoBell;
-
+        Button toCVS;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class CartSelection extends AppCompatActivity {
         toWalmart = findViewById(R.id.btn_Walmart);
         toTarget = findViewById(R.id.btn_Target);
         toTacoBell = findViewById(R.id.btn_Taco_Bell);
-
+        toCVS = findViewById(R.id.btn_CVS);
 
         toTarget.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +51,14 @@ public class CartSelection extends AppCompatActivity {
             }
         });
 
+        toCVS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), Cart.class);
+                intent.putExtra("store","CVS");
+                startActivity(intent);
+            }
+        });
 
 
     }

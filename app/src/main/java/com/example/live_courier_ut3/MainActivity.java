@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallb
     public ImageButton target;
     public ImageButton walmart;
     public ImageButton taco_bell;
+    public ImageButton cvs;
 
     public static final MarkerOptions WAL_MARKER = new MarkerOptions();
 
@@ -248,6 +249,7 @@ public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallb
 
         taco_bell = findViewById(R.id.taco_bell);
 
+        cvs = findViewById(R.id.cvs);
 
         target.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,6 +280,17 @@ public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallb
                 toTaco_bell.putExtra(storeLookup, "Taco Bell");
                // getIntent().putExtra(storeLookup, "Taco Bell");
                 startActivity(toTaco_bell);
+            }
+        });
+
+        cvs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String storeLookup = "store";
+                Intent toCVS = new Intent(v.getContext(), StoreItems.class);
+                toCVS.putExtra(storeLookup, "CVS");
+                // getIntent().putExtra(storeLookup, "Taco Bell");
+                startActivity(toCVS);
             }
         });
 

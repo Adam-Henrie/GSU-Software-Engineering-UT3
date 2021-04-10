@@ -10,6 +10,16 @@
 
 
     <ImageButton
+        android:id="@+id/cvs"
+        android:layout_width="85dp"
+        android:layout_height="96dp"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toEndOf="@+id/taco_bell"
+        app:layout_constraintTop_toBottomOf="@+id/walmart"
+        app:srcCompat="@drawable/cvs" />
+
+    <ImageButton
         android:id="@+id/walmart"
         android:layout_width="237dp"
         android:layout_height="67dp"
