@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
+    android:background="#2E516D"
     tools:context=".Cart">
 
 
@@ -37,23 +37,19 @@
         android:id="@+id/insert_cart_order_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       android:layout_marginTop="45dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="45dp"
         android:layout_toRightOf="@id/cart_order_total"
         android:inputType="numberDecimal"
         android:text="Order total for cart" />
 
     <TextView
+        android:id="@+id/cart_order_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/cart_order_total"
-        android:text="Cart Order Total"
-        android:layout_toRightOf="@id/pay_button"
         android:layout_marginTop="45dp"
-        />
-
-
-
+        android:layout_toRightOf="@id/pay_button"
+        android:text="Cart Order Total" />
 
 
 </RelativeLayout>

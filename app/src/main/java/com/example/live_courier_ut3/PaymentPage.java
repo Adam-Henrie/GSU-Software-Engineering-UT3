@@ -117,6 +117,7 @@ public class PaymentPage extends AppCompatActivity {
                 if (snapshot != null && snapshot.exists()) {
                     Log.d(TAG, "Current data: " + snapshot.getData());
                     fundsLeft.setText(snapshot.getString("fundsLeft"));
+                    funds = snapshot.getString("fundsLeft");
 
                 } else {
                     Log.d(TAG, "Current data: null");
@@ -162,8 +163,9 @@ public class PaymentPage extends AppCompatActivity {
 
                 Map<String, Object> subFunds = new HashMap<>();
                 Double updatedFunds = Double.parseDouble(funds) - Double.parseDouble(storeTotal);
-                subFunds.put("fundsLeft", Double.toString(updatedFunds) );
-
+                Double rounded = Math.round(updatedFunds*100.0)/100.0;
+                subFunds.put("fundsLeft", Double.toString(rounded) );
+                Log.d(TAG,"funds calculation" + Double.parseDouble(funds) + " " + Double.parseDouble(storeTotal));
                 mDocRef.update(subFunds);
                 Log.d("Payment Page: ", "order total has be subbed from funds");
 

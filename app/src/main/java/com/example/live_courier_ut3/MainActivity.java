@@ -180,6 +180,13 @@ public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallb
     public ImageButton walmart;
     public ImageButton taco_bell;
     public ImageButton cvs;
+    public ImageButton gamestop;
+    public ImageButton mcdonalds;
+    public ImageButton aldi;
+    public ImageButton publix;
+    public ImageButton cookout;
+    public ImageButton wendys;
+
 
     public static final MarkerOptions WAL_MARKER = new MarkerOptions();
 
@@ -193,6 +200,7 @@ public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         try{
@@ -251,6 +259,19 @@ public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallb
 
         cvs = findViewById(R.id.cvs);
 
+        gamestop = findViewById(R.id.gamestop);
+
+        wendys = findViewById(R.id.wendys);
+
+        cookout = findViewById(R.id.cookout);
+
+        aldi = findViewById(R.id.aldi);
+
+        mcdonalds = findViewById(R.id.mcDonalds);
+
+        publix = findViewById(R.id.publix);
+
+
         target.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,6 +312,78 @@ public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallb
                 toCVS.putExtra(storeLookup, "CVS");
                 // getIntent().putExtra(storeLookup, "Taco Bell");
                 startActivity(toCVS);
+            }
+        });
+
+        gamestop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String storeLookup = "store";
+                //Target.class refers to the class that handles the scroll view of the items in ANY STORE.
+                Intent toGameStop = new Intent(v.getContext(), StoreItems.class);
+                toGameStop.putExtra(storeLookup, "GameStop");
+                startActivity(toGameStop);
+
+            }
+        });
+
+        aldi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String storeLookup = "store";
+                //Target.class refers to the class that handles the scroll view of the items in ANY STORE.
+                Intent toAldi = new Intent(v.getContext(), StoreItems.class);
+                toAldi.putExtra(storeLookup, "Aldi");
+                startActivity(toAldi);
+
+            }
+        });
+
+        mcdonalds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String storeLookup = "store";
+                //Target.class refers to the class that handles the scroll view of the items in ANY STORE.
+                Intent toMcDonalds = new Intent(v.getContext(), StoreItems.class);
+                toMcDonalds.putExtra(storeLookup, "McDonalds");
+                startActivity(toMcDonalds);
+
+            }
+        });
+
+        cookout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String storeLookup = "store";
+                //Target.class refers to the class that handles the scroll view of the items in ANY STORE.
+                Intent toCookout = new Intent(v.getContext(), StoreItems.class);
+                toCookout.putExtra(storeLookup, "Cookout");
+                startActivity(toCookout);
+
+            }
+        });
+
+        publix.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String storeLookup = "store";
+                //Target.class refers to the class that handles the scroll view of the items in ANY STORE.
+                Intent toPublix = new Intent(v.getContext(), StoreItems.class);
+                toPublix.putExtra(storeLookup, "Publix");
+                startActivity(toPublix);
+
+            }
+        });
+
+        wendys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String storeLookup = "store";
+                //Target.class refers to the class that handles the scroll view of the items in ANY STORE.
+                Intent toWendys = new Intent(v.getContext(), StoreItems.class);
+                toWendys.putExtra(storeLookup, "Wendy's");
+                startActivity(toWendys);
+
             }
         });
 

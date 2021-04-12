@@ -101,6 +101,13 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 DocumentReference userCartWal = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/WalmartCart");
                 DocumentReference userCartTac = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/Taco BellCart");
                 DocumentReference userCartCVS = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/CVSCart");
+                DocumentReference userCartAldi = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/AldiCart");
+                DocumentReference userCartCookout = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/CookoutCart");
+                DocumentReference userCartGameStop = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/GameStopCart");
+                DocumentReference userCartMcDonalds = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/McDonaldsCart");
+                DocumentReference userCartPublix = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/PublixCart");
+                DocumentReference userCartWendys = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/storeCart/Wendy'sCart");
+
                 DocumentReference userFunds = FirebaseFirestore.getInstance().document("users/" + user.getDisplayName() + "/userFunds/funds");
 
 
@@ -132,6 +139,26 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
                 userCartCVS.update(itemList);
                 userCartCVS.set(itemList);
+
+                userCartAldi.update(itemList);
+                userCartAldi.set(itemList);
+
+                userCartCookout.update(itemList);
+                userCartCookout.set(itemList);
+
+                userCartGameStop.update(itemList);
+                userCartGameStop.set(itemList);
+
+                userCartMcDonalds.update(itemList);
+                userCartMcDonalds.set(itemList);
+
+                userCartPublix.update(itemList);
+                userCartPublix.set(itemList);
+
+                userCartWendys.update(itemList);
+                userCartWendys.set(itemList);
+
+
 
                 String number = "200.00";
                 Map<String, Object> funds = new HashMap();

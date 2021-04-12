@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="15dp"
     android:id="@+id/parent_layout"
+    android:background="#2E516D"
     >
 
 
