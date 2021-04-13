@@ -18,6 +18,7 @@ public class DriversList extends AppCompatActivity {
 
 
     String store;
+    String dropLocation;
 
     ImageButton driver1;
     ImageButton driver2;
@@ -32,7 +33,7 @@ public class DriversList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drivers_list);
         Intent intent = getIntent();
-
+        dropLocation = intent.getStringExtra("dropLocation");
        store = intent.getStringExtra("store");
 
 
@@ -53,6 +54,7 @@ public class DriversList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DriverDetails.class);
+                intent.putExtra("dropLocation", dropLocation);
                 intent.putExtra("name", "Josh");
                 intent.putExtra("store", store);
                 startActivity(intent);
@@ -63,6 +65,7 @@ public class DriversList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DriverDetails.class);
+                intent.putExtra("dropLocation", dropLocation);
                 intent.putExtra("name", "Jan");
                 intent.putExtra("store", store);
                 startActivity(intent);
@@ -73,6 +76,7 @@ public class DriversList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DriverDetails.class);
+                intent.putExtra("dropLocation", dropLocation);
                 intent.putExtra("name", "Sarah");
                 intent.putExtra("store", store);
                 startActivity(intent);

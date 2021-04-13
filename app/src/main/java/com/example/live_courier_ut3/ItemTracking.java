@@ -169,7 +169,7 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
     FirebaseUser user;
     GeoPoint curLoc;
     GeoPoint startingPoint;
-    String store;
+
     MarkerOptions directionsMarker = new MarkerOptions();
     //count for the timer for the progress bar
     int count = 0;
@@ -182,6 +182,10 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
     int countdown;
 
     String driverName;
+    String store;
+    String dropLocation;
+
+    TextView droppedOff;
 
     Button leaveReview;
 
@@ -198,6 +202,10 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent = getIntent();
         store = intent.getStringExtra("store");
         driverName = intent.getStringExtra("driver");
+        dropLocation = intent.getStringExtra("dropLocation");
+
+        droppedOff = findViewById(R.id.tv_dropped_off);
+        droppedOff.setText(driverName + " dropped off your order at " + dropLocation);
         Log.d("name of store passed", store);
         mapView = findViewById(R.id.map_route_to_house);
 
@@ -306,6 +314,7 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
                 countdown = countdown - 1;
                 count = count + 1;
                 progressBar.setProgress(count);
+
              //   setProgressValue(progress);
                 Log.d("Time left: ",  Integer.toString(progressBar.getProgress()));
 
@@ -313,6 +322,14 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
                 //once the count is greater than the max display value for the progressbar then cancel the timer
                 //also make the leave a review button visible.
                 if (count >= progressBar.getMax()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            droppedOff.setVisibility(View.VISIBLE);
+                        }
+                    });
+
                     t.cancel();
 
                 }

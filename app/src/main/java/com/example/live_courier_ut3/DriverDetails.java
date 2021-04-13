@@ -31,8 +31,11 @@ public class DriverDetails extends AppCompatActivity {
     TextView stars;
     TextView distance;
     TextView driver;
+
     String store;
     String driverName;
+    String dropLocation;
+
     ImageView star1;
     ImageView star2;
     ImageView star3;
@@ -50,6 +53,7 @@ public class DriverDetails extends AppCompatActivity {
 
         store = intent.getStringExtra("store");
         driverName = intent.getStringExtra("name");
+        dropLocation = intent.getStringExtra("dropLocation");
 
         grabStars = findViewById(R.id.grabStars);
         grabDistance = findViewById(R.id.grabDistance);
@@ -145,6 +149,7 @@ public class DriverDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),ItemTracking.class);
+                intent.putExtra("dropLocation",dropLocation);
                 intent.putExtra("driver", driverName);
                 intent.putExtra("store",store);
 

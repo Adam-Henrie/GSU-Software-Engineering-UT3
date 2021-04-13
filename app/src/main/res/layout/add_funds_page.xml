@@ -4,46 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E516D">
-
-    <Button
-        android:id="@+id/btn_minus_one"
-        style="@style/Widget.MaterialComponents.TimePicker.Button"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="28dp"
-        android:text="- 1 Dollar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_plus_one" />
-
-    <Button
-        android:id="@+id/btn_plus_one"
-        style="@style/Widget.MaterialComponents.TimePicker.Button"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="28dp"
-        android:text="+ 1 Dollar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_minus_five"
-        style="@style/Widget.MaterialComponents.TimePicker.Button"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="24dp"
-        android:text="- 5 Dollars"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_plus_five" />
+    android:background="#2684D0">
 
     <Button
         android:id="@+id/btn_plus_five"
@@ -53,22 +14,62 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginLeft="48dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="52dp"
         android:text="+ 5 Dollars"
+        android:textColor="#FFEB3B"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_minus_one" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_plus_fifty"
+        style="@style/Widget.MaterialComponents.TimePicker.Button"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="20dp"
+        android:text="+ 50 Dollars"
+        android:textColor="#FFEB3B"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_plus_twenty" />
+
+    <Button
+        android:id="@+id/btn_plus_twenty"
+        style="@style/Widget.MaterialComponents.TimePicker.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="20dp"
+        android:text="+ 20 Dollars"
+        android:textColor="#FFEB3B"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_plus_ten" />
+
+    <Button
+        android:id="@+id/btn_plus_ten"
+        style="@style/Widget.MaterialComponents.TimePicker.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="12dp"
+        android:text="+ 10 Dollars"
+        android:textColor="#FFEB3B"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_plus_five" />
+
 
     <Button
         android:id="@+id/button_add_funds_real"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="48dp"
         android:text="Add Funds"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.797"
-        app:layout_constraintStart_toEndOf="@+id/add_funds_here"
+        app:layout_constraintStart_toEndOf="@+id/btn_plus_twenty"
         app:layout_constraintTop_toBottomOf="@+id/tv_set_add_funds" />
 
     <TextView
@@ -77,36 +78,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="48dp"
-        android:text="Add Funds on this page"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_minus_ten" />
-
-
-    <Button
-        android:id="@+id/btn_plus_ten"
-        style="@style/Widget.MaterialComponents.TimePicker.Button"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
         android:layout_marginTop="36dp"
-        android:text="+ 10 Dollars"
+        android:text="Add Funds with these button or manually input your desired amount"
+        android:textColor="#FFEB3B"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_minus_five" />
-
-    <Button
-        android:id="@+id/btn_minus_ten"
-        style="@style/Widget.MaterialComponents.TimePicker.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="28dp"
-        android:text="- 10 Dollars"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_plus_ten" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_plus_fifty" />
 
     <TextView
         android:id="@+id/tv_set_add_funds"
@@ -117,8 +93,32 @@
         android:layout_marginTop="112dp"
 
         android:text="Funds show up here"
+        android:textColor="#FFEB3B"
         app:layout_constraintStart_toEndOf="@+id/btn_plus_ten"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_input_amount_funds"
+        android:layout_width="200dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="12dp"
+        android:hint="Input your amount here."
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_funds_here" />
+
+    <Button
+        android:id="@+id/btn_add_manual_funds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="36dp"
+        android:text="Add Funds"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_input_amount_funds" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

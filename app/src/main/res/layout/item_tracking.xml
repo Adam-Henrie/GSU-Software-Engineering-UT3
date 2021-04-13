@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E516D">
+    android:background="#2684D0">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map_route_to_house"
@@ -84,6 +84,19 @@
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/delivery_description"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+    <TextView
+        android:id="@+id/tv_dropped_off"
+        android:layout_width="123dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/btn_leave_review"
+        app:layout_constraintTop_toBottomOf="@+id/tv_you_must_logout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

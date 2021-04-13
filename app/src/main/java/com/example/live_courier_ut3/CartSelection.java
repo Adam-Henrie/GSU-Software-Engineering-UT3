@@ -11,10 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class CartSelection extends AppCompatActivity {
 
-        Button toWalmart;
-        Button toTarget;
-        Button toTacoBell;
-        Button toCVS;
+        ImageButton toWalmart;
+        ImageButton toTarget;
+        ImageButton toTacoBell;
+        ImageButton toCVS;
+
+
         ImageButton toAldi;
         ImageButton toCookout;
         ImageButton toGameStop;
@@ -27,10 +29,12 @@ public class CartSelection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_cart_selection);
 
-        toWalmart = findViewById(R.id.btn_Walmart);
-        toTarget = findViewById(R.id.btn_Target);
-        toTacoBell = findViewById(R.id.btn_Taco_Bell);
-        toCVS = findViewById(R.id.btn_CVS);
+        toWalmart = findViewById(R.id.walmartCart);
+        toTarget = findViewById(R.id.targetCart);
+        toTacoBell = findViewById(R.id.taco_bellCart);
+        toCVS = findViewById(R.id.cvsCart);
+
+
         toAldi = findViewById(R.id.aldiCart);
         toCookout = findViewById(R.id.cookoutCart);
         toGameStop = findViewById(R.id.gamestopCart);

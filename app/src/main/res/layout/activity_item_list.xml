@@ -11,7 +11,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#2E516D">
+        android:background="@color/white">
 
     </androidx.recyclerview.widget.RecyclerView>
 

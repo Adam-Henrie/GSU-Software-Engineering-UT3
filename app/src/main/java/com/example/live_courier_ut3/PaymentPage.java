@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -39,6 +40,8 @@ public class PaymentPage extends AppCompatActivity {
     String funds;
     Button addFunds;
     Button agreeAndPay;
+    EditText inputDropLocation;
+
 
 
 
@@ -72,7 +75,7 @@ public class PaymentPage extends AppCompatActivity {
         fundsLeft = findViewById(R.id.insert_funds_left);
         addFunds = findViewById(R.id.button_add_funds);
         agreeAndPay = findViewById(R.id.agree_and_pay);
-
+        inputDropLocation = findViewById(R.id.et_drop_location);
 
 
 
@@ -159,6 +162,8 @@ public class PaymentPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DriversList.class);
                 //need to send the store location to the item tracking page to start the tracking bard on the item tracking page.
+                String locationPass = inputDropLocation.getText().toString();
+                intent.putExtra("dropLocation", locationPass);
                 intent.putExtra("store", store);
 
                 Map<String, Object> subFunds = new HashMap<>();

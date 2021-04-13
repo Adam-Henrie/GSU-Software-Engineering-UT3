@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +24,9 @@ public class FundsPage extends AppCompatActivity {
     Button minusTen;
     Button plusFive;
     Button minusFive;
-    Button plusOne;
-    Button minusOne;
+    Button addManualFunds;
+
+    EditText manualFundInput;
 
     TextView currentFunds;
     String fundsKey = "funds";
@@ -38,15 +40,19 @@ public class FundsPage extends AppCompatActivity {
         Intent intent = getIntent();
         fundsLeft = intent.getStringExtra(fundsKey);
 
-        plusTen = findViewById(R.id.btn_plus_ten);
-        minusTen = findViewById(R.id.btn_minus_ten);
         plusFive = findViewById(R.id.btn_plus_five);
-        minusFive = findViewById(R.id.btn_minus_five);
-        plusOne = findViewById(R.id.btn_plus_one);
-        minusOne = findViewById(R.id.btn_minus_one);
+        plusTen = findViewById(R.id.btn_plus_ten);
+        minusTen = findViewById(R.id.btn_plus_twenty);
+        minusFive = findViewById(R.id.btn_plus_fifty);
+
 
         currentFunds = findViewById(R.id.tv_set_add_funds);
+
+        //edit text
+        manualFundInput = findViewById(R.id.et_input_amount_funds);
+
         addFunds = findViewById(R.id.button_add_funds_real);
+        addManualFunds = findViewById(R.id.btn_add_manual_funds);
 
         currentFunds.setText(fundsLeft);
         Log.d(TAG, "funds left " + fundsLeft);
@@ -89,23 +95,6 @@ public class FundsPage extends AppCompatActivity {
             }
         });
 
-        plusOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Double sub =  Double.parseDouble(fundsLeft) + 1;
-                fundsLeft = Double.toString(sub);
-                currentFunds.setText(fundsLeft);
-            }
-        });
-
-        minusOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Double sub =  Double.parseDouble(fundsLeft) - 1;
-                fundsLeft = Double.toString(sub);
-                currentFunds.setText(fundsLeft);
-            }
-        });
 
 
 
@@ -125,7 +114,21 @@ public class FundsPage extends AppCompatActivity {
             }
         });
 
-
+        addManualFunds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DocumentReference mDocRef = FirebaseFirestore.getInstance().document("users/"
+                        + FirebaseAuth.getInstance().getCurrentUser().getDisplayName()
+                        + "/userFunds"
+                        + "/funds");
+                Map<String, Object> newFunds = new HashMap<>();
+                String amount = manualFundInput.getText().toString();
+                newFunds.put("fundsLeft", amount);
+                Log.d(TAG, "current funds in this page" + newFunds.toString());
+                mDocRef.update(newFunds);
+                mDocRef.set(newFunds);
+            }
+        });
 
 
 

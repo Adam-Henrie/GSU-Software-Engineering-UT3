@@ -5,15 +5,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E516D">
+    android:background="#2684D0">
+
+    <ImageButton
+        android:id="@+id/cvsCart"
+        android:layout_width="85dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toEndOf="@+id/targetCart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cvs" />
+
+    <ImageButton
+        android:id="@+id/taco_bellCart"
+        android:layout_width="85dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="4dp"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aldiCart"
+        app:srcCompat="@drawable/taco_bell" />
+
+    <ImageButton
+        android:id="@+id/walmartCart"
+        android:layout_width="237dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="28dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerCrop"
+        android:src="@drawable/walmart"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/targetCart" />
+
+    <ImageButton
+        android:id="@+id/targetCart"
+        android:layout_width="104dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/target_logo" />
 
     <ImageButton
         android:id="@+id/cookoutCart"
         android:layout_width="161dp"
         android:layout_height="104dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="4dp"
         android:background="?attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,49 +75,51 @@
         android:id="@+id/mcDonaldsCart"
         android:layout_width="85dp"
         android:layout_height="96dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="4dp"
         android:background="?attr/selectableItemBackground"
         android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/btn_CVS"
-        app:layout_constraintTop_toBottomOf="@+id/btn_Taco_Bell"
+        app:layout_constraintStart_toEndOf="@+id/wendysCart"
+        app:layout_constraintTop_toBottomOf="@+id/publixCart"
         app:srcCompat="@drawable/mcdonalds" />
 
     <ImageButton
         android:id="@+id/wendysCart"
         android:layout_width="85dp"
         android:layout_height="96dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="4dp"
         android:background="?attr/selectableItemBackground"
         android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/gamestopCart"
-        app:layout_constraintTop_toBottomOf="@+id/mcDonaldsCart"
+        app:layout_constraintStart_toEndOf="@+id/taco_bellCart"
+        app:layout_constraintTop_toBottomOf="@+id/publixCart"
         app:srcCompat="@drawable/wendys" />
 
     <ImageButton
         android:id="@+id/aldiCart"
         android:layout_width="104dp"
         android:layout_height="90dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="24dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="fitCenter"
-        app:layout_constraintStart_toEndOf="@+id/cookoutCart"
-        app:layout_constraintTop_toBottomOf="@+id/mcDonaldsCart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/walmartCart"
         app:srcCompat="@drawable/aldi_0" />
 
     <ImageButton
         android:id="@+id/publixCart"
         android:layout_width="81dp"
         android:layout_height="84dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackground"
         android:scaleType="fitCenter"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/aldiCart"
         app:layout_constraintTop_toBottomOf="@+id/gamestopCart"
         app:srcCompat="@drawable/publix_logo_12378_widget_logo" />
 
@@ -74,52 +127,13 @@
         android:id="@+id/gamestopCart"
         android:layout_width="104dp"
         android:layout_height="90dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="fitCenter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_CVS"
+        app:layout_constraintStart_toEndOf="@+id/walmartCart"
+        app:layout_constraintTop_toBottomOf="@+id/cvsCart"
         app:srcCompat="@drawable/gamestop" />
 
-    <Button
-        android:id="@+id/btn_Target"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="To Target Cart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_Walmart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="To Walmart Cart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_Target" />
-
-    <Button
-        android:id="@+id/btn_Taco_Bell"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="To Taco Bell Cart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_Walmart" />
-
-    <Button
-        android:id="@+id/btn_CVS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="To cvs cart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_Taco_Bell" />
 </androidx.constraintlayout.widget.ConstraintLayout>

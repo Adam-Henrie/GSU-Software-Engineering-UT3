@@ -1,32 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2E516D">
+    android:background="#2684D0">
 
     <TextView
         android:id="@+id/payment_page_header"
         android:layout_width="200dp"
         android:layout_height="103dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="80dp"
         android:layout_marginTop="16dp"
         android:text="Here is where you can select to pay. You can add funds from this page as well as see you cart total. From here you will be transferred to the item tracking page. "
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/order_total_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="12dp"
+        android:text="Order Total"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/payment_page_header" />
+
+    <TextView
+        android:id="@+id/insert_funds_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="12dp"
+        android:text="Here amount of funds left"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/funds_left"
+        app:layout_constraintTop_toBottomOf="@+id/insert_order_total" />
+
+    <Button
+        android:id="@+id/button_add_funds"
+        android:layout_width="80dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
+        android:layout_marginBottom="8dp"
+        android:text="Add Funds"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/agree_and_pay_prompt"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/insert_order_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
         android:layout_marginTop="12dp"
         android:text="Order total goes here"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/order_total_title"
         app:layout_constraintTop_toBottomOf="@+id/payment_page_header" />
 
@@ -34,64 +70,47 @@
         android:id="@+id/funds_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="64dp"
         android:layout_marginTop="12dp"
         android:text="Funds Left:"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/insert_order_total" />
-
-    <TextView
-        android:id="@+id/insert_funds_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintLeft_toRightOf="@id/funds_left"
-        app:layout_constraintTop_toBottomOf="@+id/insert_order_total"
-        android:text="Here amount of funds left"
-        />
-
-    <Button
-        android:id="@+id/agree_and_pay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="60dp"
-        android:text="Agree and Pay"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/agree_and_pay_prompt" />
-
-    <TextView
-        android:id="@+id/order_total_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="12dp"
-        android:text="Order Total"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/payment_page_header" />
 
     <TextView
         android:id="@+id/agree_and_pay_prompt"
         android:layout_width="266dp"
         android:layout_height="67dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="I agree to pay the amount listed in this window and acknowledge that the order total will be deducted from my remaining funds. "
-        android:textColor="#2196F3"
+        android:textColor="#FFEB3B"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/insert_funds_left" />
 
     <Button
-        android:id="@+id/button_add_funds"
-        android:layout_width="80dp"
-        android:layout_height="52dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginBottom="8dp"
-        android:text="Add Funds"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/agree_and_pay_prompt"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:id="@+id/agree_and_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginLeft="108dp"
+        android:layout_marginTop="116dp"
+        android:text="Agree and Pay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_drop_location" />
+
+    <EditText
+        android:id="@+id/et_drop_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="96dp"
+        android:layout_marginLeft="96dp"
+        android:layout_marginTop="44dp"
+        android:text="Input Drop Location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/agree_and_pay_prompt" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
