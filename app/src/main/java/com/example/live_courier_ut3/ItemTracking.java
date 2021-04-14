@@ -107,15 +107,58 @@ public class ItemTracking extends AppCompatActivity implements OnMapReadyCallbac
         markerTaco.title("Taco Bell, Alpharetta");
         markerTaco.position(latTaco);
 
+        LatLng latAldi = new LatLng(33.8410901, -84.3726925);
+        MarkerOptions markerAldi = new MarkerOptions();
+        markerAldi.title("Aldi");
+        markerAldi.position(latAldi);
+
+        LatLng latCVS  = new LatLng(33.814720153808594,-84.35320281982422);
+        MarkerOptions markerCVS  = new MarkerOptions();
+        markerCVS.title("CVS");
+        markerCVS.position(latCVS);
+
+        LatLng latCookout  = new LatLng(33.774267,-84.3691984);
+        MarkerOptions markerCookout  = new MarkerOptions();
+        markerCookout.title("Cookout");
+        markerCookout.position(latCookout);
+
+        LatLng latGameStop  = new LatLng(33.80242156982422,-84.4148941040039);
+        MarkerOptions markerGameStop  = new MarkerOptions();
+        markerGameStop.title("GameStop");
+        markerGameStop.position(latGameStop);
+
+        LatLng latMcDonalds  = new LatLng(33.782188415527344,-84.40742492675781);
+        MarkerOptions markerMcDonalds  = new MarkerOptions();
+        markerMcDonalds.title("McDonalds");
+        markerMcDonalds.position(latMcDonalds);
+
+        LatLng latPublix  = new LatLng(33.8201801,-84.3865942);
+        MarkerOptions markerPublix  = new MarkerOptions();
+        markerPublix.title("Publix");
+        markerPublix.position(latPublix);
+
+        LatLng latWendys  = new LatLng(33.8204231,-84.4524239);
+        MarkerOptions markerWendys  = new MarkerOptions();
+        markerWendys.title("Wendy's");
+        markerWendys.position(latWendys);
+
 
         // TODO: 2/26/2021 change this to my home so that I don't get confused.
 
 
         //markerOptions here is referring to my home
         googleMap.addMarker(markerOptions);
+
         googleMap.addMarker(WAL_MARKER);
         googleMap.addMarker(markerTarget);
         googleMap.addMarker(markerTaco);
+        googleMap.addMarker(markerAldi);
+        googleMap.addMarker(markerCVS);
+        googleMap.addMarker(markerCookout);
+        googleMap.addMarker(markerGameStop);
+        googleMap.addMarker(markerMcDonalds);
+        googleMap.addMarker(markerPublix);
+        googleMap.addMarker(markerWendys);
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
         googleMap.animateCamera(cameraUpdate);

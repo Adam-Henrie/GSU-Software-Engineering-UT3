@@ -12,13 +12,7 @@
 
         android:title="@string/Cart" />
 
-    <item android:id="@+id/driver_details"
-        android:orderInCategory="98"
-        android:title="Driver Details"
-        />
-    <item android:id="@+id/driver_reviews"
-        android:orderInCategory="97"
-        android:title="Driver Reviews"
-        />
+
+
 
 </menu>

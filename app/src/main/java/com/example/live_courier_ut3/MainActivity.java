@@ -707,21 +707,21 @@ public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallb
 
                 return true;
 
-            case R.id.driver_reviews:
+//            case R.id.driver_reviews:
+//
+//                Toast.makeText(this, "Driver Reviews",Toast.LENGTH_SHORT).show();
+//                Intent toReviews = new Intent(this, Reviews.class);
+//                toReviews.putExtra("driver","Josh");
+//                startActivity(toReviews);
+//
+//
+//                return true;
 
-                Toast.makeText(this, "Driver Reviews",Toast.LENGTH_SHORT).show();
-                Intent toReviews = new Intent(this, Reviews.class);
-                toReviews.putExtra("driver","Josh");
-                startActivity(toReviews);
-
-
-                return true;
-
-            case R.id.driver_details:
-                Toast.makeText(this, "Driver Details",Toast.LENGTH_SHORT).show();
-                Intent toDriverDetails = new Intent(this, DriverDetails.class);
-
-                startActivity(toDriverDetails);
+//            case R.id.driver_details:
+//                Toast.makeText(this, "Driver Details",Toast.LENGTH_SHORT).show();
+//                Intent toDriverDetails = new Intent(this, DriverDetails.class);
+//
+//                startActivity(toDriverDetails);
 
 
 

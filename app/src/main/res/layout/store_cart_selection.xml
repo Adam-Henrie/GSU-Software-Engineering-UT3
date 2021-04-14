@@ -136,4 +136,17 @@
         app:layout_constraintTop_toBottomOf="@+id/cvsCart"
         app:srcCompat="@drawable/gamestop" />
 
+    <TextView
+        android:id="@+id/tv_store_cart_page_text_identifier"
+        android:layout_width="77dp"
+        android:layout_height="109dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="16dp"
+        android:text="Here you can select which cart you want to purchase from. "
+        android:textColor="#FFEB3B"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

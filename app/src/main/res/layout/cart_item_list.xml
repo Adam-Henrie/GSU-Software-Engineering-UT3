@@ -14,7 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="0dp"
-        android:text='This is the cart. Here is a list of items that you have selected for purchase. Click "Pay Now" to pay.' />
+        android:text='This is the cart. Here is a list of items that you have selected for purchase. Click "Pay Now" to pay.'
+        android:textColor="#FF9800"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
 
@@ -41,7 +43,9 @@
         android:layout_marginTop="45dp"
         android:layout_toRightOf="@id/cart_order_total"
         android:inputType="numberDecimal"
-        android:text="Order total for cart" />
+        android:text="Order total for cart"
+        android:textColor="#FF9800"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/cart_order_total"
@@ -49,7 +53,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
         android:layout_toRightOf="@id/pay_button"
-        android:text="Cart Order Total" />
+        android:text="Cart Order Total"
+        android:textColor="#FF9800"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>
