@@ -42,6 +42,7 @@ public class DriverDetails extends AppCompatActivity {
     ImageView star4;
     ImageView star5;
 
+    ImageView driverPic;
 
 
 
@@ -67,7 +68,9 @@ public class DriverDetails extends AppCompatActivity {
         star4 = findViewById(R.id.star4);
         star5 = findViewById(R.id.star5);
 
+        driverPic = findViewById(R.id.iv_driver_pic);
 
+        Picasso.get().load("https://busytape.com/wp-content/uploads/2020/03/Josh-peck-1.jpg").into(driverPic);
 
 
 //        Picasso.get().load("http://images.wikia.com/glee/images/a/a0/Gold_Star.png").into(star1);
