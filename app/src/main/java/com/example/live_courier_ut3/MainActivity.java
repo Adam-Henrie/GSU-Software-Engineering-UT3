@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity /*implements OnMapReadyCallb
             public void onClick(View v){
                 String storeLookup = "store";
                 Intent toWalmart = new Intent(v.getContext(), StoreItems.class);
-                getIntent().putExtra(storeLookup,"Walmart");
+                toWalmart.putExtra(storeLookup,"Walmart");
 
                 startActivity(toWalmart);
             }
