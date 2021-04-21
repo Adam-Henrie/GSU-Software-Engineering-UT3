@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,6 +27,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 public class PaymentPage extends AppCompatActivity {
@@ -54,11 +57,14 @@ public class PaymentPage extends AppCompatActivity {
   public  ArrayList<Map<String,String>> itemName;
 
    public ArrayList<String> numInv;    //new ArrayList<String>(Collections.emptyList());
-
+    public ArrayList<Map<String,String>> listOfNamesToGetIndex;
 
    public List<String> mNames = new ArrayList<String>();
     public List<Integer> mIndex = new ArrayList<Integer>();
     public String numUpdate;
+
+    //index of the name of the item that we are trying to decrement its inventory value
+    int indexOfName;
 
     String fundsKey = "funds";
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,6 +211,7 @@ public class PaymentPage extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
                             numInv = (ArrayList<String>) documentSnapshot.get("itemNumber");
+                            listOfNamesToGetIndex = (ArrayList<Map<String, String>>) documentSnapshot.get("itemList");
                             assert numInv != null;
                         //    Log.d(TAG, "Checking the value of numInv" + numInv.toString());
                         } else {
@@ -216,20 +223,6 @@ public class PaymentPage extends AppCompatActivity {
 
                // Log.d(TAG, "checking value of mNames " + mNames.toString());
 
-
-//                for(int y = 0; y < size; y ++){
-//                    Map<String, Object> updateInv = new HashMap<String,Object>();
-//                     Log.d(TAG, "Re-checking the value of numInv" + numInv.toString());
-//                    int indexOfName = numInv.indexOf(mNames.get(y));
-//                    Log.d(TAG, "checking for indexOfName " + indexOfName);
-//                    numUpdate = numInv.get(numInv.indexOf(mNames.get(y)));
-//                    numUpdate = String.valueOf(Integer.parseInt(numUpdate) - 1);
-//                    numInv.set(indexOfName,numUpdate);
-//
-//                    updateInv.put("itemNumber", numInv);
-//                    removeFromInventory.update(updateInv);
-//                    removeFromInventory.set(updateInv);
-//                }
 
                 Handler h = new Handler();
 
@@ -260,13 +253,32 @@ public class PaymentPage extends AppCompatActivity {
         List<String> mNammmessss = mNamess;
         List<Integer> mIndexx = index;
         Log.d(TAG, "is this running!!!!!");
+
+
+
         for(int y = 0; y < size; y ++){
                     Map<String, Object> updateInv = new HashMap<String,Object>();
                      Log.d(TAG, "Re-checking the value of numInv" + numInv.toString());
                      Log.d(TAG, "names passed to method? " + mNammmessss);
                      Log.d(TAG, "first name from names " + mNammmessss.get(y));
                      Log.d(TAG, "index array " + mIndexx);
-                    int indexOfName = mIndexx.get(y);
+       // Log.d(TAG, "armapList? is it there? " + listOfNamesToGetIndex.toString());
+                    for(int k = 0;  k < listOfNamesToGetIndex.size(); k++){
+                        Log.d(TAG, "is this method running?");
+                        Map<String,String> mapToGetKey = new HashMap<String,String>();
+                        mapToGetKey = listOfNamesToGetIndex.get(k);
+                        Log.d(TAG, "What is this map value?" + mapToGetKey);
+                        Log.d(TAG, "what is the key value?" + mapToGetKey.keySet().toString().replace("[", "").replace("]", ""));
+                        Log.d(TAG, "mNamessss.get(y)" + mNammmessss.get(y));
+                        if((mapToGetKey.keySet().toString().replace("[", "").replace("]", "")).equals(mNammmessss.get(y))){
+                            Log.d(TAG,"is this line of code running at all?");
+                           indexOfName = k;
+                           break;
+                        }
+                    }
+
+
+
                     Log.d(TAG, "checking for indexOfName " + indexOfName);
                     numUpdate = numInv.get(indexOfName);
                     numUpdate = String.valueOf(Integer.parseInt(numUpdate) - 1);

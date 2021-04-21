@@ -29,6 +29,7 @@
                             Below we can have information about how many
 are left in stock. This information will be pulled from
 firestore. "
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemImageDetails" />
@@ -41,6 +42,7 @@ firestore. "
         android:layout_marginLeft="4dp"
         android:layout_marginTop="16dp"
         android:text="Number Left"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemDetailText" />
 
@@ -52,6 +54,7 @@ firestore. "
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:text="insert_number"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/number_of_items"
         app:layout_constraintTop_toBottomOf="@+id/itemDetailText" />
 
@@ -63,6 +66,7 @@ firestore. "
         android:layout_marginLeft="4dp"
         android:layout_marginTop="4dp"
         android:text="Price of Item"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/number_of_items" />
 
@@ -74,6 +78,7 @@ firestore. "
         android:layout_marginLeft="8dp"
         android:layout_marginTop="4dp"
         android:text="insert_price"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/price_of_item"
         app:layout_constraintTop_toBottomOf="@+id/insert_number" />
 

@@ -2,6 +2,7 @@ package com.example.live_courier_ut3;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -70,7 +71,17 @@ public class DriverDetails extends AppCompatActivity {
 
         driverPic = findViewById(R.id.iv_driver_pic);
 
-        Picasso.get().load("https://busytape.com/wp-content/uploads/2020/03/Josh-peck-1.jpg").into(driverPic);
+
+        if(driverName.equals("Josh") ){
+            Picasso.get().load("https://busytape.com/wp-content/uploads/2020/03/Josh-peck-1.jpg").into(driverPic);
+            Log.d("TAG", "did this work");
+        } else
+        if(driverName.equals("Jan")){
+            Picasso.get().load("https://www.thefamouspeople.com/profiles/thumbs/jan-hooks-1.jpg").into(driverPic);
+        } else
+        if(driverName.equals("Sarah")){
+            Picasso.get().load("http://newsradio1620.com/wp-content/uploads/2020/08/sarah-matthews.jpg").into(driverPic);
+        }
 
 
 //        Picasso.get().load("http://images.wikia.com/glee/images/a/a0/Gold_Star.png").into(star1);
