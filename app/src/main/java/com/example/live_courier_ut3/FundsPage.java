@@ -21,9 +21,9 @@ public class FundsPage extends AppCompatActivity {
 
 
     Button plusTen;
-    Button minusTen;
+    Button plusTwenty;
     Button plusFive;
-    Button minusFive;
+    Button plusFifty;
     Button addManualFunds;
 
     EditText manualFundInput;
@@ -42,8 +42,8 @@ public class FundsPage extends AppCompatActivity {
 
         plusFive = findViewById(R.id.btn_plus_five);
         plusTen = findViewById(R.id.btn_plus_ten);
-        minusTen = findViewById(R.id.btn_plus_twenty);
-        minusFive = findViewById(R.id.btn_plus_fifty);
+        plusTwenty = findViewById(R.id.btn_plus_twenty);
+        plusFifty = findViewById(R.id.btn_plus_fifty);
 
 
         currentFunds = findViewById(R.id.tv_set_add_funds);
@@ -68,10 +68,10 @@ public class FundsPage extends AppCompatActivity {
             }
         });
 
-        minusTen.setOnClickListener(new View.OnClickListener() {
+        plusTwenty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Double sub =  Double.parseDouble(fundsLeft) - 10;
+                Double sub =  Double.parseDouble(fundsLeft) + 20;
                 fundsLeft = Double.toString(sub);
                 currentFunds.setText(fundsLeft);
             }
@@ -86,10 +86,10 @@ public class FundsPage extends AppCompatActivity {
             }
         });
 
-        minusFive.setOnClickListener(new View.OnClickListener() {
+        plusFifty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Double sub =  Double.parseDouble(fundsLeft) - 5;
+                Double sub =  Double.parseDouble(fundsLeft) + 50;
                 fundsLeft = Double.toString(sub);
                 currentFunds.setText(fundsLeft);
             }
