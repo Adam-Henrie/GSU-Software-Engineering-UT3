@@ -1,5 +1,7 @@
 # GSU-Software-Engineering-UT3
 
+Android App Source code under master branch. 
+
 This project finished. Baseline functionality of the DoorDash like app has been completed. This was my first foray into Android App design. Learned from scratch over a semester period. 
 
 
